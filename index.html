@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Six Dimensions of Wellness & Social Cognitive Theory Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,28 +13,22 @@
         .modal-bg { backdrop-filter: blur(5px); }
         .card-hover-effect { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .card-hover-effect:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
-        @media (max-width: 640px) {
-            .chart-container { height: 300px; }
+        .prioritizer-card {
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
         }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .prioritizer-card.selected {
+            border-color: #008080; /* teal-600 */
+            background-color: #e0f2f2; /* A lighter teal for selected background */
+            transform: scale(1.02);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
     </style>
 </head>
 <body class="bg-stone-50 text-slate-700">
 <!-- Chosen Palette: Calm Earth (Background: stone-50, Text: slate-700, Primary Accent: teal-600, Secondary Accents: amber-500, stone-200) -->
 <!-- Application Structure Plan: A top-level navigation SPA. The structure includes a 'Home' section for introduction, a 'Six Dimensions' section with interactive cards revealing details in a modal, a 'Social Cognitive Theory (SCT)' section with a similar card layout, and an 'Action Plan' section where users can apply the concepts to create a personal plan. This non-linear, section-based design was chosen to replace the slide-by-slide format, allowing users to explore topics at their own pace, promoting engagement and better information retention. The key interaction is the "Action Plan" builder, which transforms passive learning into an active, goal-setting experience. -->
-<!-- Visualization & Content Choices: 1. Wellness/SCT Concepts -> Goal: Organize/Inform -> Viz: Interactive Card Grid with Modals -> Interaction: Click-to-reveal -> Justification: Breaks down complex info into digestible chunks, preventing overload and encouraging exploration. -> Library/Method: Vanilla JS, Tailwind CSS. 2. Wellness Poll -> Goal: Engage/Compare -> Viz: Interactive Bar Chart -> Interaction: User clicks a button to vote, and the chart updates in real-time -> Justification: More dynamic and engaging than a static poll, providing instant visual feedback. -> Library/Method: Chart.js. 3. Personal Action Plan -> Goal: Apply/Synthesize -> Viz: Interactive Form/Builder -> Interaction: User selects options and types goals, generating a personalized plan. -> Justification: The core applicative feature, empowering users to use what they've learned. -> Library/Method: HTML Forms, Vanilla JS. 4. Reciprocal Determinism Diagram -> Goal: Inform -> Viz: HTML/CSS Diagram -> Interaction: Static visual -> Justification: Recreates key diagram without images, ensuring a clean and scalable element. -> Library/Method: Tailwind CSS. -->
+<!-- Visualization & Content Choices: 1. Wellness/SCT Concepts -> Goal: Organize/Inform -> Viz: Interactive Card Grid with Modals -> Interaction: Click-to-reveal -> Justification: Breaks down complex info into digestible chunks, preventing overload and encouraging exploration. -> Library/Method: Vanilla JS, Tailwind CSS. 2. Wellness Prioritizer -> Goal: Engage/Personal Reflection -> Viz: Clickable Cards with Selected State -> Interaction: User clicks cards to highlight their focus areas, dynamic text summary updates -> Justification: Provides a direct, personal, and visually clear way for users to identify and reflect on their current wellness priorities without needing complex backend data. Allows multiple selections. -> Library/Method: Vanilla JS, Tailwind CSS. 3. Personal Action Plan -> Goal: Apply/Synthesize -> Viz: Interactive Form/Builder -> Interaction: User selects options and types goals, generating a personalized plan. -> Justification: The core applicative feature, empowering users to use what they've learned. -> Library/Method: HTML Forms, Vanilla JS. 4. Reciprocal Determinism Diagram -> Goal: Inform -> Viz: HTML/CSS Diagram -> Interaction: Static visual -> Justification: Recreates key diagram without images, ensuring a clean and scalable element. -> Library/Method: Tailwind CSS. -->
 <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 shadow-sm">
@@ -90,18 +83,12 @@
                 </div>
 
                 <div class="mt-20 text-center">
-                    <h3 class="text-2xl sm:text-3xl font-bold text-slate-800">Quick Poll: What's Your Focus?</h3>
-                    <p class="mt-3 max-w-2xl mx-auto text-slate-600">Which wellness dimension do you want to boost most right now? Click to vote!</p>
-                    <div id="poll-buttons" class="mt-6 flex flex-wrap justify-center gap-3"></div>
-                    <div class="mt-8">
-                        <div id="poll-chart-loading" class="flex justify-center items-center h-48">
-                            <div class="loader"></div>
-                        </div>
-                        <div class="chart-container hidden" id="wellnessPollChartContainer">
-                            <canvas id="wellnessPollChart"></canvas>
-                        </div>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-slate-800">Your Wellness Prioritizer!</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-slate-600">Click on the dimensions you'd like to focus on most right now. Select as many as you wish!</p>
+                    <div id="prioritizer-grid" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                        <!-- Wellness Prioritizer cards will be inserted here by JS -->
                     </div>
-                    <button id="reset-poll-button" class="mt-6 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2 px-4 rounded-full transition-transform duration-200 hover:scale-105 hidden">Reset Poll</button>
+                    <p id="prioritizer-summary" class="mt-8 text-xl font-medium text-teal-700 h-8 transition-opacity duration-500 opacity-0">Your current focus areas: None selected.</p>
                 </div>
             </div>
         </section>
@@ -163,9 +150,6 @@
                 <h3 class="text-2xl font-bold">Thank You!</h3>
                 <p class="mt-2 text-slate-300">Thank Thank you for your incredible participation and engagement!</p>
             </div>
-            <div class="mt-4 text-center text-slate-400 text-sm">
-                <p>Your User ID for this session: <span id="user-id-display" class="font-mono text-xs break-all">Loading...</span></p>
-            </div>
             <div class="mt-8 max-w-4xl mx-auto">
                 <button id="resources-toggle" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-md flex justify-between items-center">
                     <span>Further Reading & Full References</span>
@@ -188,11 +172,7 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const wellnessData = [
                 { id: 'physical', title: 'Physical Wellness', emoji: '💪', color: 'bg-rose-100', text: 'text-rose-800', subtitle: 'Your Body is Your Temple (or Spaceship!)', definition: 'Move, fuel, and rest your body!', examples: ['Regular exercise (even short bursts!)', 'Smart eating (balance, not deprivation)', 'Quality sleep (your brain\'s recharge cycle)'], takeaway: 'Studies show that regular physical activity can improve mood, energy, and even cognitive function (Warburton et al., 2006).' },
                 { id: 'emotional', title: 'Emotional Wellness', emoji: '❤️', color: 'bg-amber-100', text: 'text-amber-800', subtitle: 'Ride the Waves, Don\'t Drown!', definition: 'Feel it, name it, handle it. It\'s okay not to be okay.', examples: ['Journaling your thoughts', 'Chatting with a trusted friend', 'Practicing mindfulness (even 5 minutes!)'], takeaway: 'Research shows that emotional regulation is linked to better mental health and resilience (Gross, 2015).' },
@@ -240,142 +220,9 @@
             const closeModalButton = document.getElementById('close-modal-button');
             const modalBg = document.querySelector('.modal-bg');
 
-            const pollChartLoading = document.getElementById('poll-chart-loading');
-            const wellnessPollChartContainer = document.getElementById('wellnessPollChartContainer');
-            const resetPollButton = document.getElementById('reset-poll-button');
-            const userIdDisplay = document.getElementById('user-id-display');
-
-            let db;
-            let auth;
-            let userId;
-            let wellnessPollChart;
-
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-            async function initializeFirebase() {
-                try {
-                    const app = initializeApp(firebaseConfig);
-                    db = getFirestore(app);
-                    auth = getAuth(app);
-
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-
-                    onAuthStateChanged(auth, (user) => {
-                        if (user) {
-                            userId = user.uid;
-                            userIdDisplay.textContent = userId;
-                            setupPollRealtimeListener();
-                        } else {
-                            userId = crypto.randomUUID(); // Fallback for unauthenticated
-                            userIdDisplay.textContent = userId + " (Anonymous)";
-                            // If user logs out, poll won't update in real-time unless re-authenticated or data is public.
-                            // For this app, we'll assume public read/write if auth is successful, or local only if not.
-                        }
-                        pollChartLoading.classList.add('hidden');
-                        wellnessPollChartContainer.classList.remove('hidden');
-                        resetPollButton.classList.remove('hidden');
-                    });
-
-                } catch (error) {
-                    console.error("Firebase initialization or authentication error:", error);
-                    userIdDisplay.textContent = "Error loading user ID.";
-                    pollChartLoading.classList.add('hidden');
-                    wellnessPollChartContainer.classList.remove('hidden');
-                    resetPollButton.classList.remove('hidden');
-                    // Fallback to local poll if Firebase fails
-                    setupLocalPoll();
-                }
-            }
-
-            function setupPollRealtimeListener() {
-                const pollCollectionRef = collection(db, `artifacts/${appId}/public/data/wellnessPollVotes`);
-                wellnessData.forEach(async (dim) => {
-                    const docRef = doc(pollCollectionRef, dim.id);
-                    const docSnap = await getDoc(docRef);
-                    if (!docSnap.exists()) {
-                        await setDoc(docRef, { count: 0 });
-                    }
-                });
-
-                onSnapshot(pollCollectionRef, (snapshot) => {
-                    const currentVotes = wellnessData.map(dim => {
-                        const doc = snapshot.docs.find(d => d.id === dim.id);
-                        return doc ? doc.data().count : 0;
-                    });
-                    updateChartData(currentVotes);
-                }, (error) => {
-                    console.error("Error listening to poll votes:", error);
-                    // Fallback to local poll if real-time listener fails
-                    setupLocalPoll();
-                });
-            }
-
-            function setupLocalPoll() {
-                let localPollVotes = wellnessData.map(() => 0);
-                updateChartData(localPollVotes); // Initialize chart with local data
-
-                document.querySelectorAll('#poll-buttons button').forEach((button, index) => {
-                    button.addEventListener('click', () => {
-                        localPollVotes[index]++;
-                        updateChartData(localPollVotes);
-                        button.classList.add('ring-2', 'ring-offset-2', 'ring-teal-500');
-                    });
-                });
-
-                resetPollButton.addEventListener('click', () => {
-                    localPollVotes = wellnessData.map(() => 0);
-                    updateChartData(localPollVotes);
-                    document.querySelectorAll('#poll-buttons button').forEach(btn => btn.classList.remove('ring-2', 'ring-offset-2', 'ring-teal-500'));
-                });
-            }
-
-            function updateChartData(votesArray) {
-                if (wellnessPollChart) {
-                    wellnessPollChart.data.datasets[0].data = votesArray;
-                    wellnessPollChart.update();
-                } else {
-                    initializeChart(votesArray);
-                }
-            }
-
-            function initializeChart(initialVotes) {
-                const pollCtx = document.getElementById('wellnessPollChart').getContext('2d');
-                wellnessPollChart = new Chart(pollCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: wellnessData.map(d => d.title),
-                        datasets: [{
-                            label: '# of Votes',
-                            data: initialVotes,
-                            backgroundColor: wellnessData.map(d => d.color.replace('100', '400')),
-                            borderColor: wellnessData.map(d => d.color.replace('100', '600')),
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        indexAxis: 'y',
-                        scales: {
-                            x: { beginAtZero: true, ticks: { stepSize: 1 } },
-                            y: { ticks: { autoSkip: false } }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: { enabled: true } 
-                        }
-                    }
-                });
-            }
-
-            initializeFirebase();
-
+            const prioritizerGrid = document.getElementById('prioritizer-grid');
+            const prioritizerSummary = document.getElementById('prioritizer-summary');
+            
             function openModal() { modal.style.display = 'flex'; }
             function closeModal() { modal.style.display = 'none'; }
 
@@ -387,7 +234,7 @@
                 card.className = `p-6 rounded-2xl shadow-md cursor-pointer card-hover-effect ${type === 'wellness' ? item.color : 'bg-stone-100'}`;
                 card.innerHTML = `
                     <div class="flex items-center">
-                        <div class="text-3xl mr-4">${item.emoji || '�'}</div>
+                        <div class="text-3xl mr-4">${item.emoji || '💡'}</div>
                         <div>
                             <h3 class="text-xl font-bold ${type === 'wellness' ? item.text : 'text-slate-800'}">${item.title}</h3>
                             <p class="text-slate-600">${item.subtitle}</p>
@@ -451,53 +298,45 @@
             wellnessData.forEach(item => dimensionsGrid.appendChild(createCard(item, 'wellness')));
             sctData.forEach(item => sctGrid.appendChild(createCard(item, 'sct')));
 
-            const pollButtonsContainer = document.getElementById('poll-buttons');
-            
-            wellnessData.forEach((item, index) => {
-                const button = document.createElement('button');
-                button.textContent = item.title;
-                button.className = `px-4 py-2 text-sm font-semibold rounded-full card-hover-effect ${item.color} ${item.text}`;
-                button.addEventListener('click', async () => {
-                    if (db && userId) {
-                        const pollDocRef = doc(db, `artifacts/${appId}/public/data/wellnessPollVotes`, item.id);
-                        try {
-                            await updateDoc(pollDocRef, { count: increment(1) });
-                        } catch (e) {
-                            console.error("Error updating poll vote:", e);
-                            // If doc doesn't exist yet, create it. This typically only happens on first-ever vote.
-                            const docSnap = await getDoc(pollDocRef);
-                            if (!docSnap.exists()) {
-                                await setDoc(pollDocRef, { count: 1 });
-                            }
-                        }
-                    } else {
-                        console.warn("Firestore not initialized or user not authenticated. Vote not recorded globally.");
-                        // Fallback: If for some reason Firestore isn't ready, just update locally.
-                        const localVotes = wellnessPollChart.data.datasets[0].data;
-                        localVotes[index]++;
-                        updateChartData(localVotes);
-                    }
-                    document.querySelectorAll('#poll-buttons button').forEach(btn => btn.classList.remove('ring-2', 'ring-offset-2', 'ring-teal-500'));
-                    button.classList.add('ring-2', 'ring-offset-2', 'ring-teal-500');
-                });
-                pollButtonsContainer.appendChild(button);
-            });
+            // Wellness Prioritizer Logic
+            const selectedDimensions = new Set();
 
-            resetPollButton.addEventListener('click', async () => {
-                if (db && userId) {
-                    const pollCollectionRef = collection(db, `artifacts/${appId}/public/data/wellnessPollVotes`);
-                    const promises = wellnessData.map(dim => 
-                        setDoc(doc(pollCollectionRef, dim.id), { count: 0 })
-                    );
-                    await Promise.all(promises);
+            function updatePrioritizerSummary() {
+                if (selectedDimensions.size === 0) {
+                    prioritizerSummary.textContent = "Your current focus areas: None selected.";
+                    prioritizerSummary.classList.remove('opacity-100');
+                    prioritizerSummary.classList.add('opacity-0');
                 } else {
-                    console.warn("Firestore not initialized or user not authenticated. Poll not reset globally.");
-                    // Fallback to local reset
-                    const localVotes = wellnessData.map(() => 0);
-                    updateChartData(localVotes);
+                    const focusedAreas = Array.from(selectedDimensions).join(', ');
+                    prioritizerSummary.textContent = `Your current focus areas: ${focusedAreas}.`;
+                    prioritizerSummary.classList.remove('opacity-0');
+                    prioritizerSummary.classList.add('opacity-100');
                 }
-                document.querySelectorAll('#poll-buttons button').forEach(btn => btn.classList.remove('ring-2', 'ring-offset-2', 'ring-teal-500'));
+            }
+
+            wellnessData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `p-6 rounded-2xl shadow-md cursor-pointer prioritizer-card ${item.color}`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-center flex-col">
+                        <div class="text-5xl mb-2">${item.emoji}</div>
+                        <h3 class="text-xl font-bold text-center ${item.text}">${item.title}</h3>
+                    </div>`;
+                
+                card.addEventListener('click', () => {
+                    if (selectedDimensions.has(item.title)) {
+                        selectedDimensions.delete(item.title);
+                        card.classList.remove('selected');
+                    } else {
+                        selectedDimensions.add(item.title);
+                        card.classList.add('selected');
+                    }
+                    updatePrioritizerSummary();
+                });
+                prioritizerGrid.appendChild(card);
             });
+            updatePrioritizerSummary(); // Initial summary state
+
 
             const icebreakerBtns = document.querySelectorAll('.icebreaker-btn');
             const icebreakerResponse = document.getElementById('icebreaker-response');
@@ -566,4 +405,3 @@
     </script>
 </body>
 </html>
-�
