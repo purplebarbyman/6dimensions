@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Six Dimensions of Wellness & Social Cognitive Theory Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .modal-bg { backdrop-filter: blur(5px); }
+        .card-hover-effect { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover-effect:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (max-width: 640px) {
+            .chart-container { height: 300px; }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-700">
+<!-- Chosen Palette: Calm Earth (Background: stone-50, Text: slate-700, Primary Accent: teal-600, Secondary Accents: amber-500, stone-200) -->
+<!-- Application Structure Plan: A top-level navigation SPA. The structure includes a 'Home' section for introduction, a 'Six Dimensions' section with interactive cards revealing details in a modal, a 'Social Cognitive Theory (SCT)' section with a similar card layout, and an 'Action Plan' section where users can apply the concepts to create a personal plan. This non-linear, section-based design was chosen to replace the slide-by-slide format, allowing users to explore topics at their own pace, promoting engagement and better information retention. The key interaction is the "Action Plan" builder, which transforms passive learning into an active, goal-setting experience. -->
+<!-- Visualization & Content Choices: 1. Wellness/SCT Concepts -> Goal: Organize/Inform -> Viz: Interactive Card Grid with Modals -> Interaction: Click-to-reveal -> Justification: Breaks down complex info into digestible chunks, preventing overload and encouraging exploration. -> Library/Method: Vanilla JS, Tailwind CSS. 2. Wellness Poll -> Goal: Engage/Compare -> Viz: Interactive Bar Chart -> Interaction: User clicks a button to vote, and the chart updates in real-time -> Justification: More dynamic and engaging than a static poll, providing instant visual feedback. -> Library/Method: Chart.js. 3. Personal Action Plan -> Goal: Apply/Synthesize -> Viz: Interactive Form/Builder -> Interaction: User selects options and types goals, generating a personalized plan. -> Justification: The core applicative feature, empowering users to use what they've learned. -> Library/Method: HTML Forms, Vanilla JS. 4. Reciprocal Determinism Diagram -> Goal: Inform -> Viz: HTML/CSS Diagram -> Interaction: Static visual -> Justification: Recreates key diagram without images, ensuring a clean and scalable element. -> Library/Method: Tailwind CSS. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <span class="text-xl font-bold text-teal-700">Wellness Guide</span>
+                <div class="hidden sm:flex sm:space-x-8">
+                    <a href="#home" class="text-slate-600 hover:text-teal-600 font-medium">Home</a>
+                    <a href="#dimensions" class="text-slate-600 hover:text-teal-600 font-medium">The 6 Dimensions</a>
+                    <a href="#sct" class="text-slate-600 hover:text-teal-600 font-medium">Behavior Theory</a>
+                    <a href="#plan" class="text-slate-600 hover:text-teal-600 font-medium">Your Action Plan</a>
+                </div>
+                <button id="mobile-menu-button" class="sm:hidden p-2 rounded-md text-slate-600 hover:bg-stone-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden sm:hidden pb-4">
+                <a href="#home" class="block py-2 px-4 text-slate-600 hover:bg-teal-50 rounded">Home</a>
+                <a href="#dimensions" class="block py-2 px-4 text-slate-600 hover:bg-teal-50 rounded">The 6 Dimensions</a>
+                <a href="#sct" class="block py-2 px-4 text-slate-600 hover:bg-teal-50 rounded">Behavior Theory</a>
+                <a href="#plan" class="block py-2 px-4 text-slate-600 hover:bg-teal-50 rounded">Your Action Plan</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-teal-800 tracking-tight">Your Superpower Guide to Thriving</h1>
+                <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-slate-600">Explore the Six Dimensions of Wellness and learn the secrets of Social Cognitive Theory to build healthy, lasting habits at work and beyond.</p>
+                <div class="mt-12">
+                    <h3 class="text-2xl font-bold text-slate-800">Icebreaker: Your Instant Healthy Habit!</h3>
+                    <p class="mt-2 text-slate-600">If you could instantly master any healthy habit, what would it be?</p>
+                    <div class="mt-6 flex flex-wrap justify-center gap-4">
+                        <button class="icebreaker-btn bg-amber-400 hover:bg-amber-500 text-amber-900 font-bold py-2 px-4 rounded-full transition-transform duration-200 hover:scale-105">8 Hours of Sleep</button>
+                        <button class="icebreaker-btn bg-lime-400 hover:bg-lime-500 text-lime-900 font-bold py-2 px-4 rounded-full transition-transform duration-200 hover:scale-105">Eating More Veggies</button>
+                        <button class="icebreaker-btn bg-sky-400 hover:bg-sky-500 text-sky-900 font-bold py-2 px-4 rounded-full transition-transform duration-200 hover:scale-105">Daily Meditation</button>
+                        <button class="icebreaker-btn bg-rose-400 hover:bg-rose-500 text-rose-900 font-bold py-2 px-4 rounded-full transition-transform duration-200 hover:scale-105">Consistent Exercise</button>
+                    </div>
+                    <p id="icebreaker-response" class="mt-6 text-xl font-medium text-teal-700 h-8 transition-opacity duration-500 opacity-0"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="dimensions" class="py-16 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-800">Meet Your Six Wellness Superpowers!</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Wellness isn't just one thing. It's about thriving in all areas of your life. Click on a card to explore each dimension.</p>
+                </div>
+                <div id="dimensions-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+
+                <div class="mt-20 text-center">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-slate-800">Quick Poll: What's Your Focus?</h3>
+                    <p class="mt-3 max-w-2xl mx-auto text-slate-600">Which wellness dimension do you want to boost most right now? Click to vote!</p>
+                    <div id="poll-buttons" class="mt-6 flex flex-wrap justify-center gap-3"></div>
+                    <div class="mt-8">
+                        <div class="chart-container">
+                            <canvas id="wellnessPollChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sct" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-800">Become a Behavior Architect</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Social Cognitive Theory (SCT) gives us the blueprint for how we learn and change our behavior. Explore the key concepts below.</p>
+                </div>
+                <div id="sct-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+        
+        <section id="plan" class="py-16 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-800">Create Your Personal Action Plan</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Let's put it all together! Use the concepts we've learned to build a simple, actionable plan for one wellness goal.</p>
+                </div>
+                <div class="mt-12 max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="space-y-6">
+                        <div>
+                            <label for="wellness-goal-select" class="block text-sm font-medium text-slate-700">1. Choose a Wellness Dimension to focus on:</label>
+                            <select id="wellness-goal-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md"></select>
+                        </div>
+                        <div>
+                            <label for="specific-goal-input" class="block text-sm font-medium text-slate-700">2. Set a small, specific goal for this week:</label>
+                            <input type="text" id="specific-goal-input" placeholder="e.g., Go for a 15-minute walk during lunch" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="self-efficacy-input" class="block text-sm font-medium text-slate-700">3. (Self-Efficacy) What's one TINY first step to build confidence?</label>
+                            <input type="text" id="self-efficacy-input" placeholder="e.g., Just put on my walking shoes after lunch" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="observational-learning-input" class="block text-sm font-medium text-slate-700">4. (Observational Learning) Who can you watch or learn from?</label>
+                            <input type="text" id="observational-learning-input" placeholder="e.g., My coworker who always takes a walk, or a YouTube video" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="reinforcement-input" class="block text-sm font-medium text-slate-700">5. (Reinforcement) How will you celebrate your progress?</label>
+                            <input type="text" id="reinforcement-input" placeholder="e.g., Listen to my favorite podcast during the walk" class="mt-1 block w-full border-slate-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                        </div>
+                    </div>
+                    <div class="mt-8 bg-teal-50 border-l-4 border-teal-500 text-teal-800 p-6 rounded-r-lg">
+                        <h4 class="font-bold text-lg">My Action Plan:</h4>
+                        <div id="plan-output" class="mt-4 space-y-2">
+                            <p>Your plan will appear here as you fill out the fields above.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold">Thank You!</h3>
+                <p class="mt-2 text-slate-300">Thank you for your incredible participation and engagement!</p>
+            </div>
+            <div class="mt-8 max-w-4xl mx-auto">
+                <button id="resources-toggle" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-md flex justify-between items-center">
+                    <span>Further Reading & Full References</span>
+                    <span id="toggle-icon">▼</span>
+                </button>
+                <div id="resources-content" class="hidden mt-4 bg-slate-700 p-6 rounded-md text-sm text-slate-300 overflow-x-auto">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="modal" class="fixed inset-0 z-50 items-center justify-center hidden">
+        <div class="modal-bg fixed inset-0 bg-black/50"></div>
+        <div class="bg-white rounded-2xl shadow-2xl m-4 w-full max-w-2xl max-h-[90vh] overflow-y-auto relative p-6 sm:p-8">
+            <button id="close-modal-button" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wellnessData = [
+                { id: 'physical', title: 'Physical Wellness', emoji: '💪', color: 'bg-rose-100', text: 'text-rose-800', subtitle: 'Your Body is Your Temple (or Spaceship!)', definition: 'Move, fuel, and rest your body!', examples: ['Regular exercise (even short bursts!)', 'Smart eating (balance, not deprivation)', 'Quality sleep (your brain\'s recharge cycle)'], takeaway: 'Studies show that regular physical activity can improve mood, energy, and even cognitive function (Warburton et al., 2006).' },
+                { id: 'emotional', title: 'Emotional Wellness', emoji: '❤️', color: 'bg-amber-100', text: 'text-amber-800', subtitle: 'Ride the Waves, Don\'t Drown!', definition: 'Feel it, name it, handle it. It\'s okay not to be okay.', examples: ['Journaling your thoughts', 'Chatting with a trusted friend', 'Practicing mindfulness (even 5 minutes!)'], takeaway: 'Research shows that emotional regulation is linked to better mental health and resilience (Gross, 2015).' },
+                { id: 'intellectual', title: 'Intellectual Wellness', emoji: '🧠', color: 'bg-sky-100', text: 'text-sky-800', subtitle: 'Keep Your Brain Happy & Hungry!', definition: 'Feed your curiosity, always be learning.', examples: ['Reading a new book (fiction or non-fiction!)', 'Solving puzzles (crosswords, Sudoku)', 'Picking up a new skill (coding, cooking, a language)'], takeaway: 'Lifelong learning is associated with better cognitive health and life satisfaction (Hodges et al., 2018).' },
+                { id: 'social', title: 'Social Wellness', emoji: '🤝', color: 'bg-lime-100', text: 'text-lime-800', subtitle: 'Your Connection Power!', definition: 'Connect, belong, and build strong ties.', examples: ['Calling a friend just to say hi', 'Joining a book club or sports team', 'Volunteering for a cause you care about'], takeaway: 'A strong social network can reduce stress and improve mental health (Holt-Lunstad et al., 2010).' },
+                { id: 'spiritual', title: 'Spiritual Wellness', emoji: '✨', color: 'bg-violet-100', text: 'text-violet-800', subtitle: 'Finding Your North Star', definition: 'Discover your purpose, values, and inner peace.', examples: ['Meditation or quiet reflection', 'Spending time in nature', 'Exploring your personal values'], takeaway: 'Spiritual well-being is linked to greater life satisfaction and resilience (Koenig, 2012).' },
+                { id: 'occupational', title: 'Occupational Wellness', emoji: '💼', color: 'bg-teal-100', text: 'text-teal-800', subtitle: 'Love What You Do, or Learn to!', definition: 'Finding joy & purpose in your work. Balanced work-life.', examples: ['Learning new skills at work', 'Setting healthy work-life boundaries', 'Pursuing career goals (even small ones!)'], takeaway: 'Job satisfaction is linked to better mental health and productivity (Judge et al., 2001).' },
+            ];
+            
+            const sctData = [
+                { title: 'Reciprocal Determinism', subtitle: "The 'You, Me & Everything' Triangle", definition: 'Your personal factors (thoughts, beliefs), your environment (work, home, friends), and your behavior (actions) all influence each other in a constant dance.', diagram: true },
+                { title: 'Observational Learning', subtitle: 'Copycat Power!', definition: 'We learn a lot by watching others. This is how children learn from adults, and how employees learn from mentors and leaders.', examples: ['Kids learning manners from parents', 'New hires picking up office norms', 'Learning a new exercise from an instructor'] },
+                { title: 'Self-Efficacy', subtitle: "The 'I Think I Can!' Factor", definition: 'Your belief in your own ability to succeed at a specific task. High self-efficacy leads to greater motivation and persistence.', examples: ['Starting with a 5-minute walk instead of an hour run', 'Celebrating small wins to build confidence', 'Saying, "I can try this!" instead of "I can\'t do this."'] },
+                { title: 'Outcome Expectations', subtitle: "The 'What Happens Next?' Factor", definition: 'Your beliefs about the results of your actions. Positive expectations can motivate you to put in more effort and persist through challenges.', examples: ['"If I exercise, I’ll have more energy."', '"If I learn this new software, I’ll get a promotion."'] },
+                { title: 'Behavioral Capability', subtitle: "The 'Do You Know How?' Factor", definition: 'Having the actual knowledge and skills to perform a behavior. Training and practice are essential for building this capability.', examples: ['Learning to cook a healthy meal (knowledge + skill)', 'Attending a training program for a new tool', 'Watching a tutorial video to master a task'] },
+                { title: 'Reinforcements', subtitle: 'Rewards & Reprimands', definition: 'Responses to behaviors that affect whether they’re repeated. Positive reinforcement (like praise) increases the likelihood of a behavior.', examples: ['Getting praise for good performance', 'Feeling energized after exercise', 'A tangible reward for hitting a goal'] }
+            ];
+
+            const references = `
+                <p class="font-bold mb-2">Books:</p>
+                <ul class="list-disc pl-5 mb-4 space-y-1"><li>Travis, J. W., & Ryan, R. S. (2004). <em>Wellness Workbook: How to Achieve Enduring Health and Vitality.</em> Celestial Arts.</li></ul>
+                <p class="font-bold mb-2">Key Articles:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Bandura, A. (1986). <em>Social Foundations of Thought and Action: A Social Cognitive Theory.</em> Prentice-Hall.</li>
+                    <li>Bandura, A. (1997). <em>Self-Efficacy: The Exercise of Control.</em> W.H. Freeman.</li>
+                    <li>Goyal, M., et al. (2014). Meditation programs for psychological stress and well-being: A systematic review and meta-analysis. <em>JAMA Internal Medicine, 174</em>(3), 357-368.</li>
+                    <li>Gross, J. J. (2015). Emotion regulation: Current status and future prospects. <em>Psychological Inquiry, 26</em>(1), 1-26.</li>
+                    <li>Hettler, B. (1980). The Six Dimensions of Wellness Model. <em>National Wellness Institute.</em></li>
+                    <li>Hodges, N. J., Ford, P., Hendry, D. T., & Williams, A. M. (2018). Lifelong learning in sport and physical activity. <em>Sport, Education and Society, 23</em>(6), 601-615.</li>
+                    <li>Holt-Lunstad, J., Smith, T. B., & Layton, J. B. (2010). Social relationships and mortality risk: a meta-analytic review. <em>PLoS Medicine, 7</em>(7), e1000316.</li>
+                    <li>Judge, T. A., Thoresen, C. J., Bono, J. E., & Patton, G. K. (2001). The job satisfaction–job performance relationship: A qualitative and quantitative review. <em>Psychological Bulletin, 127</em>(3), 376-407.</li>
+                    <li>Kniffin, K. M., et al. (2021). COVID-19 and the workplace: Implications, issues, and insights for future research and action. <em>American Psychologist, 76</em>(1), 63-77.</li>
+                    <li>Koenig, H. G. (2012). Religion, spirituality, and health: The research and clinical implications. <em>ISRN Psychiatry, 2012</em>, 278730.</li>
+                    <li>Laranjo, L., et al. (2018). The influence of social networking sites on health behavior change: A systematic review and meta-analysis. <em>Journal of the American Medical Informatics Association, 25</em>(9), 1248-1258.</li>
+                    <li>Pajares, F. (2002). <em>Overview of Social Cognitive Theory and of Self-Efficacy.</em> University of Kentucky.</li>
+                    <li>Schunk, D. H., & Usher, E. L. (2019). Social Cognitive Theory and Motivation. In <em>The Oxford Handbook of Human Motivation</em> (2nd ed.).</li>
+                    <li>Swarbrick, M. (2006). A wellness approach. <em>Psychiatric Rehabilitation Journal, 29</em>(4), 311-314.</li>
+                    <li>Warburton, D. E. R., Nicol, C. W., & Bredin, S. S. D. (2006). Health benefits of physical activity: the evidence. <em>CMAJ, 174</em>(6), 801-809.</li>
+                </ul>`;
+            
+            const dimensionsGrid = document.getElementById('dimensions-grid');
+            const sctGrid = document.getElementById('sct-grid');
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalButton = document.getElementById('close-modal-button');
+            const modalBg = document.querySelector('.modal-bg');
+            
+            function openModal() { modal.style.display = 'flex'; }
+            function closeModal() { modal.style.display = 'none'; }
+
+            closeModalButton.addEventListener('click', closeModal);
+            modalBg.addEventListener('click', closeModal);
+
+            function createCard(item, type) {
+                const card = document.createElement('div');
+                card.className = `p-6 rounded-2xl shadow-md cursor-pointer card-hover-effect ${type === 'wellness' ? item.color : 'bg-stone-100'}`;
+                card.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="text-3xl mr-4">${item.emoji || '💡'}</div>
+                        <div>
+                            <h3 class="text-xl font-bold ${type === 'wellness' ? item.text : 'text-slate-800'}">${item.title}</h3>
+                            <p class="text-slate-600">${item.subtitle}</p>
+                        </div>
+                    </div>`;
+                card.addEventListener('click', () => {
+                    let contentHTML = '';
+                    if (type === 'wellness') {
+                        contentHTML = `
+                            <div class="text-center mb-4"><span class="text-6xl">${item.emoji}</span></div>
+                            <h2 class="text-3xl font-bold text-center ${item.text}">${item.title}</h2>
+                            <p class="text-center text-slate-500 text-lg mt-1 mb-6">${item.subtitle}</p>
+                            <p class="text-lg text-slate-700 mb-4"><strong>ELI5 Definition:</strong> ${item.definition}</p>
+                            <div class="bg-slate-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-slate-800 mb-2">Examples:</h4>
+                                <ul class="list-disc list-inside text-slate-600 space-y-1">${item.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
+                            </div>
+                            <div class="mt-4 p-4 bg-teal-50 border-l-4 border-teal-500 rounded-r-lg">
+                                <p class="text-teal-800"><strong>Key Takeaway:</strong> ${item.takeaway}</p>
+                            </div>`;
+                    } else {
+                        let diagramHTML = '';
+                        if (item.diagram) {
+                            diagramHTML = `
+                            <div class="my-6">
+                                <div class="relative max-w-sm mx-auto p-8">
+                                    <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-sky-200 text-sky-800 px-3 py-1 rounded-full font-semibold">Person</div>
+                                    <div class="absolute bottom-0 left-0 bg-lime-200 text-lime-800 px-3 py-1 rounded-full font-semibold">Environment</div>
+                                    <div class="absolute bottom-0 right-0 bg-amber-200 text-amber-800 px-3 py-1 rounded-full font-semibold">Behavior</div>
+                                    <svg class="w-full h-32" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path d="M50 15 L15 85" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+                                        <path d="M50 15 L85 85" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+                                        <path d="M10 85 L90 85" stroke="#94a3b8" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+                                    </svg>
+                                </div>
+                                <p class="text-center text-sm text-slate-500 italic mt-2">Personal factors, environment, and behavior all influence each other.</p>
+                            </div>`;
+                        }
+                        
+                        let examplesHTML = '';
+                        if(item.examples) {
+                            examplesHTML = `<div class="bg-slate-50 p-4 rounded-lg mt-4">
+                                <h4 class="font-bold text-slate-800 mb-2">Examples:</h4>
+                                <ul class="list-disc list-inside text-slate-600 space-y-1">${item.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
+                            </div>`;
+                        }
+
+                        contentHTML = `
+                            <h2 class="text-3xl font-bold text-center text-slate-800">${item.title}</h2>
+                            <p class="text-center text-slate-500 text-lg mt-1 mb-6">${item.subtitle}</p>
+                            <p class="text-lg text-slate-700">${item.definition}</p>
+                            ${diagramHTML}
+                            ${examplesHTML}`;
+                    }
+                    modalContent.innerHTML = contentHTML;
+                    openModal();
+                });
+                return card;
+            }
+            
+            wellnessData.forEach(item => dimensionsGrid.appendChild(createCard(item, 'wellness')));
+            sctData.forEach(item => sctGrid.appendChild(createCard(item, 'sct')));
+
+            const pollButtonsContainer = document.getElementById('poll-buttons');
+            const pollData = {
+                labels: wellnessData.map(d => d.title),
+                datasets: [{
+                    label: '# of Votes',
+                    data: wellnessData.map(() => 0),
+                    backgroundColor: wellnessData.map(d => d.color.replace('100', '400')),
+                    borderColor: wellnessData.map(d => d.color.replace('100', '600')),
+                    borderWidth: 1
+                }]
+            };
+
+            const pollCtx = document.getElementById('wellnessPollChart').getContext('2d');
+            const wellnessPollChart = new Chart(pollCtx, {
+                type: 'bar',
+                data: pollData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { beginAtZero: true, ticks: { stepSize: 1 } },
+                        y: { ticks: { autoSkip: false } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+
+            wellnessData.forEach((item, index) => {
+                const button = document.createElement('button');
+                button.textContent = item.title;
+                button.className = `px-4 py-2 text-sm font-semibold rounded-full card-hover-effect ${item.color} ${item.text}`;
+                button.addEventListener('click', () => {
+                    wellnessPollChart.data.datasets[0].data[index]++;
+                    wellnessPollChart.update();
+                    document.querySelectorAll('#poll-buttons button').forEach(btn => btn.disabled = true);
+                    button.classList.add('ring-2', 'ring-offset-2', 'ring-teal-500');
+                });
+                pollButtonsContainer.appendChild(button);
+            });
+
+            const icebreakerBtns = document.querySelectorAll('.icebreaker-btn');
+            const icebreakerResponse = document.getElementById('icebreaker-response');
+            icebreakerBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    icebreakerResponse.textContent = `Great choice! "${btn.textContent}" is a fantastic goal.`;
+                    icebreakerResponse.classList.remove('opacity-0');
+                    icebreakerResponse.classList.add('opacity-100');
+                });
+            });
+
+            const goalSelect = document.getElementById('wellness-goal-select');
+            wellnessData.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.title;
+                option.textContent = item.title;
+                goalSelect.appendChild(option);
+            });
+
+            const planInputs = ['wellness-goal-select', 'specific-goal-input', 'self-efficacy-input', 'observational-learning-input', 'reinforcement-input'];
+            const planOutput = document.getElementById('plan-output');
+            planInputs.forEach(id => document.getElementById(id).addEventListener('input', updatePlan));
+
+            function updatePlan() {
+                const wellnessGoal = document.getElementById('wellness-goal-select').value;
+                const specificGoal = document.getElementById('specific-goal-input').value;
+                const selfEfficacy = document.getElementById('self-efficacy-input').value;
+                const obsLearning = document.getElementById('observational-learning-input').value;
+                const reinforcement = document.getElementById('reinforcement-input').value;
+
+                if (!specificGoal) {
+                    planOutput.innerHTML = `<p>Your plan will appear here as you fill out the fields above.</p>`;
+                    return;
+                }
+
+                planOutput.innerHTML = `
+                    <p><strong>My Goal:</strong> To improve my <strong>${wellnessGoal} Wellness</strong> by focusing on this specific goal: <em>"${specificGoal || '...'}"</em>.</p>
+                    <p><strong>My First Tiny Step (Self-Efficacy):</strong> <em>"${selfEfficacy || '...'}"</em>.</p>
+                    <p><strong>I Can Learn From (Observation):</strong> <em>"${obsLearning || '...'}"</em>.</p>
+                    <p><strong>My Reward Will Be (Reinforcement):</strong> <em>"${reinforcement || '...'}"</em>.</p>
+                `;
+            }
+            updatePlan();
+
+            const resourcesToggle = document.getElementById('resources-toggle');
+            const resourcesContent = document.getElementById('resources-content');
+            const toggleIcon = document.getElementById('toggle-icon');
+            resourcesContent.innerHTML = references;
+            resourcesToggle.addEventListener('click', () => {
+                const isHidden = resourcesContent.classList.toggle('hidden');
+                toggleIcon.textContent = isHidden ? '▼' : '▲';
+            });
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
