@@ -178,7 +178,7 @@
                 { id: 'emotional', title: 'Emotional Wellness', emoji: '❤️', color: 'bg-amber-100', text: 'text-amber-800', subtitle: 'Ride the Waves, Don\'t Drown!', definition: 'Feel it, name it, handle it. It\'s okay not to be okay.', examples: ['Journaling your thoughts', 'Chatting with a trusted friend', 'Practicing mindfulness (even 5 minutes!)'], takeaway: 'Research shows that emotional regulation is linked to better mental health and resilience (Gross, 2015).' },
                 { id: 'intellectual', title: 'Intellectual Wellness', emoji: '🧠', color: 'bg-sky-100', text: 'text-sky-800', subtitle: 'Keep Your Brain Happy & Hungry!', definition: 'Feed your curiosity, always be learning.', examples: ['Reading a new book (fiction or non-fiction!)', 'Solving puzzles (crosswords, Sudoku)', 'Picking up a new skill (coding, cooking, a language)'], takeaway: 'Lifelong learning is associated with better cognitive health and life satisfaction (Hodges et al., 2018).' },
                 { id: 'social', title: 'Social Wellness', emoji: '🤝', color: 'bg-lime-100', text: 'text-lime-800', subtitle: 'Your Connection Power!', definition: 'Connect, belong, and build strong ties.', examples: ['Calling a friend just to say hi', 'Joining a book club or sports team', 'Volunteering for a cause you care about'], takeaway: 'A strong social network can reduce stress and improve mental health (Holt-Lunstad et al., 2010).' },
-                { id: 'spiritual', emoji: '✨', color: 'bg-violet-100', text: 'text-violet-800', subtitle: 'Finding Your North Star', definition: 'Discover your purpose, values, and inner peace.', examples: ['Meditation or quiet reflection', 'Spending time in nature', 'Exploring your personal values'], takeaway: 'Spiritual well-being is linked to greater life satisfaction and resilience (Koenig, 2012).' },
+                { id: 'spiritual', title: 'Spiritual Wellness', emoji: '✨', color: 'bg-violet-100', text: 'text-violet-800', subtitle: 'Finding Your North Star', definition: 'Discover your purpose, values, and inner peace.', examples: ['Meditation or quiet reflection', 'Spending time in nature', 'Exploring your personal values'], takeaway: 'Spiritual well-being is linked to greater life satisfaction and resilience (Koenig, 2012).' },
                 { id: 'occupational', title: 'Occupational Wellness', emoji: '💼', color: 'bg-teal-100', text: 'text-teal-800', subtitle: 'Love What You Do, or Learn to!', definition: 'Finding joy & purpose in your work. Balanced work-life.', examples: ['Learning new skills at work', 'Setting healthy work-life boundaries', 'Pursuing career goals (even small ones!)'], takeaway: 'Job satisfaction is linked to better mental health and productivity (Judge et al., 2001).' },
             ];
             
@@ -231,15 +231,16 @@
                 const card = document.createElement('div');
                 let innerContent = '';
                 if (type === 'wellness') {
+                    // Distinct style for 'Meet Your Six Wellness Superpowers!' cards
                     card.className = `p-6 rounded-2xl shadow-md cursor-pointer card-hover-effect ${item.color}`;
                     innerContent = `
-                        <div class="text-center mb-4">
-                            <span class="text-4xl block">${item.emoji}</span>
+                        <div class="text-center mb-2">
+                            <span class="text-3xl block">${item.emoji}</span>
                         </div>
-                        <h3 class="text-xl font-bold text-center ${item.text}">${item.title}</h3>
-                        <p class="text-slate-600 text-center text-sm mt-1">${item.subtitle}</p>
+                        <h3 class="text-2xl font-bold text-center ${item.text}">${item.title}</h3>
+                        <p class="text-slate-600 text-center text-base mt-1">${item.subtitle}</p>
                     `;
-                } else { // SCT cards
+                } else { // SCT cards (keep current style)
                     card.className = `p-6 rounded-2xl shadow-md cursor-pointer card-hover-effect bg-stone-100`;
                     innerContent = `
                         <div class="flex items-center">
