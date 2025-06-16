@@ -178,7 +178,7 @@
                 { id: 'emotional', title: 'Emotional Wellness', emoji: '❤️', color: 'bg-amber-100', text: 'text-amber-800', subtitle: 'Ride the Waves, Don\'t Drown!', definition: 'Feel it, name it, handle it. It\'s okay not to be okay.', examples: ['Journaling your thoughts', 'Chatting with a trusted friend', 'Practicing mindfulness (even 5 minutes!)'], takeaway: 'Research shows that emotional regulation is linked to better mental health and resilience (Gross, 2015).' },
                 { id: 'intellectual', title: 'Intellectual Wellness', emoji: '🧠', color: 'bg-sky-100', text: 'text-sky-800', subtitle: 'Keep Your Brain Happy & Hungry!', definition: 'Feed your curiosity, always be learning.', examples: ['Reading a new book (fiction or non-fiction!)', 'Solving puzzles (crosswords, Sudoku)', 'Picking up a new skill (coding, cooking, a language)'], takeaway: 'Lifelong learning is associated with better cognitive health and life satisfaction (Hodges et al., 2018).' },
                 { id: 'social', title: 'Social Wellness', emoji: '🤝', color: 'bg-lime-100', text: 'text-lime-800', subtitle: 'Your Connection Power!', definition: 'Connect, belong, and build strong ties.', examples: ['Calling a friend just to say hi', 'Joining a book club or sports team', 'Volunteering for a cause you care about'], takeaway: 'A strong social network can reduce stress and improve mental health (Holt-Lunstad et al., 2010).' },
-                { id: 'spiritual', title: 'Spiritual Wellness', emoji: '✨', color: 'bg-violet-100', text: 'text-violet-800', subtitle: 'Finding Your North Star', definition: 'Discover your purpose, values, and inner peace.', examples: ['Meditation or quiet reflection', 'Spending time in nature', 'Exploring your personal values'], takeaway: 'Spiritual well-being is linked to greater life satisfaction and resilience (Koenig, 2012).' },
+                { id: 'spiritual', emoji: '✨', color: 'bg-violet-100', text: 'text-violet-800', subtitle: 'Finding Your North Star', definition: 'Discover your purpose, values, and inner peace.', examples: ['Meditation or quiet reflection', 'Spending time in nature', 'Exploring your personal values'], takeaway: 'Spiritual well-being is linked to greater life satisfaction and resilience (Koenig, 2012).' },
                 { id: 'occupational', title: 'Occupational Wellness', emoji: '💼', color: 'bg-teal-100', text: 'text-teal-800', subtitle: 'Love What You Do, or Learn to!', definition: 'Finding joy & purpose in your work. Balanced work-life.', examples: ['Learning new skills at work', 'Setting healthy work-life boundaries', 'Pursuing career goals (even small ones!)'], takeaway: 'Job satisfaction is linked to better mental health and productivity (Judge et al., 2001).' },
             ];
             
@@ -203,8 +203,6 @@
                     <li>Hettler, B. (1980). The Six Dimensions of Wellness Model. <em>National Wellness Institute.</em></li>
                     <li>Hodges, N. J., Ford, P., Hendry, D. T., & Williams, A. M. (2018). Lifelong learning in sport and physical activity. <em>Sport, Education and Society, 23</em>(6), 601-615.</li>
                     <li>Holt-Lunstad, J., Smith, T. B., & Layton, J. B. (2010). Social relationships and mortality risk: a meta-analytic review. <em>PLoS Medicine, 7</em>(7), e1000316.</li>
-                    <li>Judge, T. A., Thoresen, C. J., Bono, J. E., & Patton, G. K. (2001). The job satisfaction–job performance relationship: A qualitative and quantitative review. <em>Psychological Bulletin, 127</em>(3), 376-407.</li>
-                    <li>Kniffin, K. M., et al. (2021). COVID-19 and the workplace: Implications, issues, and insights for future research and action. <em>American Psychologist, 76</em>(1), 63-77.</li>
                     <li>Koenig, H. G. (2012). Religion, spirituality, and health: The research and clinical implications. <em>ISRN Psychiatry, 2012</em>, 278730.</li>
                     <li>Laranjo, L., et al. (2018). The influence of social networking sites on health behavior change: A systematic review and meta-analysis. <em>Journal of the American Medical Informatics Association, 25</em>(9), 1248-1258.</li>
                     <li>Pajares, F. (2002). <em>Overview of Social Cognitive Theory and of Self-Efficacy.</em> University of Kentucky.</li>
@@ -231,15 +229,29 @@
 
             function createCard(item, type) {
                 const card = document.createElement('div');
-                card.className = `p-6 rounded-2xl shadow-md cursor-pointer card-hover-effect ${type === 'wellness' ? item.color : 'bg-stone-100'}`;
-                card.innerHTML = `
-                    <div class="flex items-center">
-                        <div class="text-3xl mr-4">${item.emoji || '💡'}</div>
-                        <div>
-                            <h3 class="text-xl font-bold ${type === 'wellness' ? item.text : 'text-slate-800'}">${item.title}</h3>
-                            <p class="text-slate-600">${item.subtitle}</p>
+                let innerContent = '';
+                if (type === 'wellness') {
+                    card.className = `p-6 rounded-2xl shadow-md cursor-pointer card-hover-effect ${item.color}`;
+                    innerContent = `
+                        <div class="text-center mb-4">
+                            <span class="text-4xl block">${item.emoji}</span>
                         </div>
-                    </div>`;
+                        <h3 class="text-xl font-bold text-center ${item.text}">${item.title}</h3>
+                        <p class="text-slate-600 text-center text-sm mt-1">${item.subtitle}</p>
+                    `;
+                } else { // SCT cards
+                    card.className = `p-6 rounded-2xl shadow-md cursor-pointer card-hover-effect bg-stone-100`;
+                    innerContent = `
+                        <div class="flex items-center">
+                            <div class="text-3xl mr-4">${item.emoji || '💡'}</div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800">${item.title}</h3>
+                                <p class="text-slate-600">${item.subtitle}</p>
+                            </div>
+                        </div>`;
+                }
+                card.innerHTML = innerContent;
+
                 card.addEventListener('click', () => {
                     let contentHTML = '';
                     if (type === 'wellness') {
@@ -255,7 +267,7 @@
                             <div class="mt-4 p-4 bg-teal-50 border-l-4 border-teal-500 rounded-r-lg">
                                 <p class="text-teal-800"><strong>Key Takeaway:</strong> ${item.takeaway}</p>
                             </div>`;
-                    } else {
+                    } else { // SCT modal content remains the same
                         let diagramHTML = '';
                         if (item.diagram) {
                             diagramHTML = `
