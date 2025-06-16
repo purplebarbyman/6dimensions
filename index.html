@@ -139,6 +139,7 @@
                             <p>Your plan will appear here as you fill out the fields above.</p>
                         </div>
                     </div>
+                    <button id="email-plan-button" class="mt-6 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-full transition-transform duration-200 hover:scale-105">Email My Plan</button>
                 </div>
             </div>
         </section>
@@ -393,6 +394,18 @@
                 `;
             }
             updatePlan();
+
+            const emailPlanButton = document.getElementById('email-plan-button');
+            emailPlanButton.addEventListener('click', () => {
+                const planText = planOutput.innerText.trim();
+                if (planText && !planText.includes("Your plan will appear here")) {
+                    const subject = encodeURIComponent("My Personal Wellness Action Plan");
+                    const body = encodeURIComponent(planText + "\n\nGenerated from the Wellness & SCT Guide.");
+                    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                } else {
+                    alert("Please fill out your action plan first!");
+                }
+            });
 
             const resourcesToggle = document.getElementById('resources-toggle');
             const resourcesContent = document.getElementById('resources-content');
