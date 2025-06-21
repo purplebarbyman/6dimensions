@@ -18,8 +18,17 @@
            margin: 0 auto;
            padding: 20px;
        }
+       /* section-hidden for general use, to hide and allow transitions */
        .section-hidden {
-           display: none;
+           display: none; /* Default hidden */
+           opacity: 0;
+           transform: scale(0.95);
+           transition: all 0.5s ease-in-out;
+       }
+       /* Ensures section-hidden applies properly to elements that aren't 'section' tags */
+       .section-visible {
+           opacity: 1;
+           transform: scale(1);
        }
        /* Custom scrollbar for better aesthetics */
        ::-webkit-scrollbar {
@@ -80,7 +89,7 @@
    </nav>
 
    <!-- Home Section -->
-   <section id="home" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl text-center transition-all duration-500 transform scale-100 opacity-100">
+   <section id="home" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl text-center">
        <h1 class="text-5xl md:text-7xl font-extrabold text-yellow-300 drop-shadow-lg mb-6 leading-tight">Unleash Your Wellness Superpowers!</h1>
        <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">Your Guide to the Six Dimensions of Wellness</p>
        <div class="relative w-full max-w-lg mx-auto mb-10">
@@ -252,7 +261,7 @@
    </div>
 
    <!-- Loading Indicator -->
-   <div id="loading-indicator" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[100] section-hidden">
+   <div id="loading-indicator" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[100] section-hidden section-visible">
        <div class="flex flex-col items-center">
            <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-yellow-500 mb-4"></div>
            <p class="text-white text-xl">Generating your hero...</p>
@@ -290,13 +299,16 @@
        function showSection(sectionId) {
            document.querySelectorAll('section').forEach(section => {
                if (section.id === sectionId) {
-                   section.classList.remove('section-hidden', 'opacity-0', 'scale-95');
-                   section.classList.add('opacity-100', 'scale-100');
+                   section.classList.remove('section-hidden');
+                   section.classList.add('section-visible');
                } else {
-                   section.classList.add('section-hidden', 'opacity-0', 'scale-95');
-                   section.classList.remove('opacity-100', 'scale-100');
+                   section.classList.remove('section-visible');
+                   section.classList.add('section-hidden');
                }
            });
+            // Also ensure modal and loading indicator are hidden when switching sections
+           document.getElementById('email-modal').classList.add('section-hidden');
+           document.getElementById('loading-indicator').classList.add('section-hidden');
        }
 
        // Initialize content on window load
@@ -304,6 +316,12 @@
            renderDimensions(); // Render dimension cards
            renderPowerSelectionOptions(); // Render power selection checkboxes/radios
            setupEventListeners(); // Set up color and style change listeners
+
+           // Ensure the loading indicator is hidden at startup
+           document.getElementById('loading-indicator').classList.add('section-hidden');
+           // Ensure the modal is hidden at startup
+           document.getElementById('email-modal').classList.add('section-hidden');
+
            showSection('home'); // Show home section by default
        };
 
