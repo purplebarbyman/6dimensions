@@ -589,7 +589,20 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+
+                // Check if the response itself indicates an error (e.g., 4xx or 5xx status)
+                if (!response.ok) {
+                    const errorBody = await response.text(); // Get raw error response
+                    emailStatus.textContent = `API Error: ${response.status} - ${response.statusText}. Check console for details.`;
+                    emailStatus.classList.remove('text-green-500');
+                    emailStatus.classList.add('text-red-500');
+                    console.error('API call failed with status:', response.status, response.statusText);
+                    console.error('Response body:', errorBody);
+                    return; // Exit function early if API call failed
+                }
+
                 const result = await response.json();
+                console.log("Full API Response:", result); // Log the full response for debugging
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
@@ -610,11 +623,11 @@
                     emailStatus.textContent = 'Failed to generate email content: Unexpected API response structure.';
                     emailStatus.classList.remove('text-green-500');
                     emailStatus.classList.add('text-red-500');
-                    console.error('API response did not contain expected content:', result);
+                    console.error('API response did not contain expected content structure:', result);
                 }
             } catch (error) {
-                console.error('Error generating email content:', error);
-                emailStatus.textContent = 'An error occurred during email content generation. Please try again.';
+                console.error('Error during email content generation or network issue:', error);
+                emailStatus.textContent = 'A network error occurred or an unexpected issue during generation. Please try again.';
                 emailStatus.classList.remove('text-green-500');
                 emailStatus.classList.add('text-red-500');
             } finally {
