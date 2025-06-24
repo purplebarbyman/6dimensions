@@ -1,553 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Unleash Your Wellness Superpowers!</title>
-   <!-- Tailwind CSS CDN -->
-   <script src="https://cdn.tailwindcss.com"></script>
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-   <style>
-       body {
-           font-family: 'Inter', sans-serif;
-           background-color: #f0f2f5; /* Light grey background */
-           color: #333;
-       }
-       .container {
-           max-width: 1200px;
-           margin: 0 auto;
-           padding: 20px;
-       }
-       /* section-hidden for general use, to hide and allow transitions */
-       .section-hidden {
-           display: none; /* Default hidden */
-           opacity: 0;
-           transform: scale(0.95);
-           transition: all 0.5s ease-in-out;
-       }
-       /* Ensures section-hidden applies properly to elements that aren't 'section' tags */
-       .section-visible {
-           opacity: 1;
-           transform: scale(1);
-       }
-       /* Custom scrollbar for better aesthetics */
-       ::-webkit-scrollbar {
-           width: 8px;
-       }
-       ::-webkit-scrollbar-track {
-           background: #f1f1f1;
-           border-radius: 10px;
-       }
-       ::-webkit-scrollbar-thumb {
-           background: #888;
-           border-radius: 10px;
-       }
-       ::-webkit-scrollbar-thumb:hover {
-           background: #555;
-       }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unleash Your Wellness Superpowers!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* section-hidden for general use, to hide and allow transitions */
+        .section-hidden {
+            display: none; /* Default hidden */
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.5s ease-in-out;
+        }
+        /* Ensures section-hidden applies properly to elements that aren't 'section' tags */
+        .section-visible {
+            opacity: 1;
+            transform: scale(1);
+            display: block; /* Ensure it's displayed when visible */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
 
-       /* Generic superhero body SVG - for base shape */
-       .superhero-body {
-           fill: #E0BBE4; /* Default skin tone */
-           transition: fill 0.3s ease;
-       }
-       .superhero-suit-primary {
-           fill: #FF0000; /* Default red */
-           transition: fill 0.3s ease;
-       }
-       .superhero-suit-accent {
-           fill: #0000FF; /* Default blue */
-           transition: fill 0.3s ease;
-       }
-       .superhero-hair {
-           fill: #333333; /* Default black */
-           transition: fill 0.3s ease;
-       }
-       .superhero-emblem {
-           fill: #FFD700; /* Default gold */
-           transition: fill 0.3s ease;
-       }
+        /* Generic superhero body SVG - for base shape */
+        .superhero-body {
+            fill: #E0BBE4; /* Default skin tone */
+            transition: fill 0.3s ease;
+        }
+        .superhero-suit-primary {
+            fill: #FF0000; /* Default red */
+            transition: fill 0.3s ease;
+        }
+        .superhero-suit-accent {
+            fill: #0000FF; /* Default blue */
+            transition: fill 0.3s ease;
+        }
+        .superhero-hair {
+            fill: #333333; /* Default black */
+            transition: fill 0.3s ease;
+        }
+        .superhero-emblem {
+            fill: #FFD700; /* Default gold */
+            transition: fill 0.3s ease;
+        }
 
-       /* Hair styles (SVG paths) - these will be dynamically inserted/swapped */
-       /* Define simple hair path d attributes */
-       .hair-style-short { d: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z"; }
-       .hair-style-spiky { d: "M100 0 L120 50 L100 30 L80 50 Z M80 0 L60 50 L80 30 L100 50 Z M120 0 L140 50 L120 30 L100 50 Z"; }
-       .hair-style-long { d: "M100 0 C40 20 40 180 100 200 C160 180 160 20 100 0 Z"; }
-       .hair-style-bun { d: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z M120 10 C150 10 150 40 120 40 C90 40 90 10 120 10 Z"; }
-   </style>
+        /* Hair styles (SVG paths) - these will be dynamically inserted/swapped */
+        /* Define simple hair path d attributes */
+        .hair-style-short { d: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z"; }
+        .hair-style-spiky { d: "M100 0 L120 50 L100 30 L80 50 Z M80 0 L60 50 L80 30 L100 50 Z M120 0 L140 50 L120 30 L100 50 Z"; }
+        .hair-style-long { d: "M100 0 C40 20 40 180 100 200 C160 180 160 20 100 0 Z"; }
+        .hair-style-bun { d: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z M120 10 C150 10 150 40 120 40 C90 40 90 10 120 10 Z"; }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-600 to-purple-800 min-h-screen text-white flex flex-col items-center p-4">
 
-   <!-- Navigation Bar -->
-   <nav class="w-full max-w-4xl bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-full py-3 px-6 mb-8 flex justify-center shadow-lg">
-       <ul class="flex space-x-6">
-           <li><button onclick="showSection('home')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">Home</button></li>
-           <li><button onclick="showSection('dimensions')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">6 Dimensions</button></li>
-           <li><button onclick="showSection('superhero-builder')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">Build Your Hero</button></li>
-           <li><button onclick="showSection('qna')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">Q&A</button></li>
-       </ul>
-   </nav>
+    <!-- Navigation Bar -->
+    <nav class="w-full max-w-4xl bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-full py-3 px-6 mb-8 flex justify-center shadow-lg">
+        <ul class="flex space-x-6">
+            <li><button onclick="showSection('home')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">Home</button></li>
+            <li><button onclick="showSection('dimensions')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">6 Dimensions</button></li>
+            <li><button onclick="showSection('superhero-builder')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">Build Your Hero</button></li>
+            <li><button onclick="showSection('qna')" class="text-lg font-semibold hover:text-yellow-300 transition-colors">Q&A</button></li>
+        </ul>
+    </nav>
 
-   <!-- Home Section -->
-   <section id="home" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl text-center">
-       <h1 class="text-5xl md:text-7xl font-extrabold text-yellow-300 drop-shadow-lg mb-6 leading-tight">Unleash Your Wellness Superpowers!</h1>
-       <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">Your Guide to the Six Dimensions of Wellness</p>
-       <div class="relative w-full max-w-lg mx-auto mb-10">
-           <img src="https://placehold.co/800x400/3498db/ffffff?text=Comic-book+Superheroes" alt="Comic-book style image with silhouettes of superheroes" class="w-full h-auto rounded-2xl shadow-xl border-4 border-yellow-400">
-           <div class="absolute inset-0 bg-black opacity-30 rounded-2xl"></div>
-       </div>
-       <p class="text-lg md:text-xl text-gray-300 mb-10">Welcome, aspiring hero! Discover your inner strength and explore the six core 'superpowers' that make up total well-being. Are you ready for your mission?</p>
-       <button onclick="showSection('superhero-builder')" class="bg-yellow-500 hover:bg-yellow-600 text-purple-900 font-bold py-4 px-10 rounded-full text-xl shadow-lg transform transition-all duration-300 hover:scale-105 active:scale-95 animate-bounce-slow">
-           Assemble Your Hero!
-       </button>
-   </section>
+    <!-- Home Section -->
+    <section id="home" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl text-center">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-yellow-300 drop-shadow-lg mb-6 leading-tight">Unleash Your Wellness Superpowers!</h1>
+        <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">Your Guide to the Six Dimensions of Wellness</p>
+        <div class="relative w-full max-w-lg mx-auto mb-10">
+            <img src="https://placehold.co/800x400/3498db/ffffff?text=Comic-book+Superheroes" alt="Comic-book style image with silhouettes of superheroes" class="w-full h-auto rounded-2xl shadow-xl border-4 border-yellow-400">
+            <div class="absolute inset-0 bg-black opacity-30 rounded-2xl"></div>
+        </div>
+        <p class="text-lg md:text-xl text-gray-300 mb-10">Welcome, aspiring hero! Discover your inner strength and explore the six core 'superpowers' that make up total well-being. Are you ready for your mission?</p>
+        <button onclick="showSection('superhero-builder')" class="bg-yellow-500 hover:bg-yellow-600 text-purple-900 font-bold py-4 px-10 rounded-full text-xl shadow-lg transform transition-all duration-300 hover:scale-105 active:scale-95 animate-bounce-slow">
+            Assemble Your Hero!
+        </button>
+    </section>
 
-   <!-- Dimensions Section -->
-   <section id="dimensions" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
-       <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Meet the 6 Core Powers</h2>
-       <p class="text-lg text-gray-200 mb-10 text-center max-w-3xl mx-auto">Wellness is more than just physical health—it's about a holistic and active process of becoming aware and making choices toward a more successful existence. All six dimensions need attention to achieve true balance.</p>
+    <!-- Dimensions Section -->
+    <section id="dimensions" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Meet the 6 Core Powers</h2>
+        <p class="text-lg text-gray-200 mb-10 text-center max-w-3xl mx-auto">Wellness is more than just physical health—it's about a holistic and active process of becoming aware and making choices toward a more successful existence. All six dimensions need attention to achieve true balance.</p>
 
-       <div id="dimensions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-           <!-- Dimension cards will be injected here by JavaScript -->
-       </div>
-   </section>
+        <div id="dimensions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dimension cards will be injected here by JavaScript -->
+        </div>
+    </section>
 
-   <!-- Superhero Builder Section -->
-   <section id="superhero-builder" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
-       <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Your Mission: Assemble Your Superhero!</h2>
-       <p class="text-lg text-gray-200 mb-8 text-center max-w-3xl mx-auto">Identify your unique wellness strengths and craft a hero that represents your journey. Customize your hero, pick your powers, and unleash your potential!</p>
+    <!-- Superhero Builder Section -->
+    <section id="superhero-builder" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Your Mission: Assemble Your Superhero!</h2>
+        <p class="text-lg text-gray-200 mb-8 text-center max-w-3xl mx-auto">Identify your unique wellness strengths and craft a hero that represents your journey. Customize your hero, pick your powers, and unleash your potential!</p>
 
-       <div class="flex flex-col lg:flex-row gap-8">
-           <!-- Customization Controls -->
-           <div class="lg:w-1/2 p-6 bg-white bg-opacity-15 rounded-2xl shadow-inner flex flex-col space-y-6">
-               <h3 class="text-2xl font-bold text-yellow-300 mb-4">1. Choose Your Powers:</h3>
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Customization Controls -->
+            <div class="lg:w-1/2 p-6 bg-white bg-opacity-15 rounded-2xl shadow-inner flex flex-col space-y-6">
+                <h3 class="text-2xl font-bold text-yellow-300 mb-4">1. Choose Your Powers:</h3>
 
-               <!-- Strongest Powers -->
-               <div>
-                   <p class="text-xl font-semibold text-gray-100 mb-3">Your 2 Strongest Powers:</p>
-                   <div id="strong-powers-options" class="grid grid-cols-2 gap-3">
-                       <!-- Checkboxes for dimensions will be injected here -->
-                   </div>
-               </div>
+                <!-- Strongest Powers -->
+                <div>
+                    <p class="text-xl font-semibold text-gray-100 mb-3">Your 2 Strongest Powers:</p>
+                    <div id="strong-powers-options" class="grid grid-cols-2 gap-3">
+                        <!-- Checkboxes for dimensions will be injected here -->
+                    </div>
+                </div>
 
-               <!-- Power to Level Up -->
-               <div>
-                   <p class="text-xl font-semibold text-gray-100 mb-3">1 Power to Level-Up:</p>
-                   <div id="level-up-powers-options" class="grid grid-cols-2 gap-3">
-                       <!-- Radio buttons for dimensions will be injected here -->
-                   </div>
-               </div>
+                <!-- Power to Level Up -->
+                <div>
+                    <p class="text-xl font-semibold text-gray-100 mb-3">1 Power to Level-Up:</p>
+                    <div id="level-up-powers-options" class="grid grid-cols-2 gap-3">
+                        <!-- Radio buttons for dimensions will be injected here -->
+                    </div>
+                </div>
 
-               <h3 class="text-2xl font-bold text-yellow-300 mb-4 mt-6">2. Customize Your Hero:</h3>
+                <h3 class="text-2xl font-bold text-yellow-300 mb-4 mt-6">2. Customize Your Hero:</h3>
 
-               <!-- Skin Tone -->
-               <div class="flex items-center space-x-4">
-                   <label for="skinTone" class="text-xl font-semibold text-gray-100 min-w-[100px]">Skin Tone:</label>
-                   <input type="color" id="skinTone" value="#E0BBE4" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
-               </div>
+                <!-- Skin Tone -->
+                <div class="flex items-center space-x-4">
+                    <label for="skinTone" class="text-xl font-semibold text-gray-100 min-w-[100px]">Skin Tone:</label>
+                    <input type="color" id="skinTone" value="#E0BBE4" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
+                </div>
 
-               <!-- Hair Style -->
-               <div class="flex items-center space-x-4">
-                   <label for="hairStyle" class="text-xl font-semibold text-gray-100 min-w-[100px]">Hair Style:</label>
-                   <select id="hairStyle" class="p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-yellow-400 focus:border-yellow-400">
-                       <option value="short">Short</option>
-                       <option value="spiky">Spiky</option>
-                       <option value="long">Long</option>
-                       <option value="bun">Bun</option>
-                   </select>
-               </div>
+                <!-- Hair Style -->
+                <div class="flex items-center space-x-4">
+                    <label for="hairStyle" class="text-xl font-semibold text-gray-100 min-w-[100px]">Hair Style:</label>
+                    <select id="hairStyle" class="p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-yellow-400 focus:border-yellow-400">
+                        <option value="short">Short</option>
+                        <option value="spiky">Spiky</option>
+                        <option value="long">Long</option>
+                        <option value="bun">Bun</option>
+                    </select>
+                </div>
 
-               <!-- Hair Color -->
-               <div class="flex items-center space-x-4">
-                   <label for="hairColor" class="text-xl font-semibold text-gray-100 min-w-[100px]">Hair Color:</label>
-                   <input type="color" id="hairColor" value="#333333" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
-               </div>
+                <!-- Hair Color -->
+                <div class="flex items-center space-x-4">
+                    <label for="hairColor" class="text-xl font-semibold text-gray-100 min-w-[100px]">Hair Color:</label>
+                    <input type="color" id="hairColor" value="#333333" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
+                </div>
 
-               <!-- Primary Suit Color -->
-               <div class="flex items-center space-x-4">
-                   <label for="primaryColor" class="text-xl font-semibold text-gray-100 min-w-[100px]">Suit Primary:</label>
-                   <input type="color" id="primaryColor" value="#FF0000" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
-               </div>
+                <!-- Primary Suit Color -->
+                <div class="flex items-center space-x-4">
+                    <label for="primaryColor" class="text-xl font-semibold text-gray-100 min-w-[100px]">Suit Primary:</label>
+                    <input type="color" id="primaryColor" value="#FF0000" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
+                </div>
 
-               <!-- Accent Suit Color -->
-               <div class="flex items-center space-x-4">
-                   <label for="accentColor" class="text-xl font-semibold text-gray-100 min-w-[100px]">Suit Accent:</label>
-                   <input type="color" id="accentColor" value="#0000FF" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
-               </div>
+                <!-- Accent Suit Color -->
+                <div class="flex items-center space-x-4">
+                    <label for="accentColor" class="text-xl font-semibold text-gray-100 min-w-[100px]">Suit Accent:</label>
+                    <input type="color" id="accentColor" value="#0000FF" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
+                </div>
 
-               <!-- Superhero Name -->
-               <div class="flex flex-col space-y-2">
-                   <label for="heroName" class="text-xl font-semibold text-gray-100">3. Name Your Hero!</label>
-                   <input type="text" id="heroName" placeholder="e.g., Captain Calm, The Connector" class="p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-yellow-400 focus:border-yellow-400">
-               </div>
+                <!-- Superhero Name -->
+                <div class="flex flex-col space-y-2">
+                    <label for="heroName" class="text-xl font-semibold text-gray-100">3. Name Your Hero!</label>
+                    <input type="text" id="heroName" placeholder="e.g., Captain Calm, The Connector" class="p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-yellow-400 focus:border-yellow-400">
+                </div>
 
-               <button onclick="generateSuperhero()" class="bg-yellow-500 hover:bg-yellow-600 text-purple-900 font-bold py-3 px-8 rounded-full text-xl shadow-lg transform transition-all duration-300 hover:scale-105 active:scale-95 mt-8">
-                   Unleash My Hero!
-               </button>
-           </div>
+                <button onclick="generateSuperhero()" class="bg-yellow-500 hover:bg-yellow-600 text-purple-900 font-bold py-3 px-8 rounded-full text-xl shadow-lg transform transition-all duration-300 hover:scale-105 active:scale-95 mt-8">
+                    Unleash My Hero!
+                </button>
+            </div>
 
-           <!-- Superhero Preview & Profile -->
-           <div class="lg:w-1/2 p-6 bg-white bg-opacity-15 rounded-2xl shadow-inner flex flex-col items-center justify-center">
-               <h3 class="text-2xl font-bold text-yellow-300 mb-4">Your Hero's Profile</h3>
-               <div id="superhero-preview" class="w-64 h-64 md:w-80 md:h-80 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden mb-6 shadow-xl border-4 border-yellow-400">
-                   <!-- SVG Superhero will be rendered here -->
-                   <svg viewBox="0 0 200 200" width="100%" height="100%">
-                       <!-- Generic Body -->
-                       <path class="superhero-body" d="M100,10 C50,10 50,190 100,190 C150,190 150,10 100,10 Z" />
-                       <!-- Suit Primary -->
-                       <path class="superhero-suit-primary" d="M100,60 C70,60 70,170 100,170 C130,170 130,60 100,60 Z M100,10 C90,10 90,40 100,40 C110,40 110,10 100,10 Z" />
-                       <!-- Suit Accent -->
-                       <path class="superhero-suit-accent" d="M100,40 C90,40 90,60 100,60 C110,60 110,40 100,40 Z M100,170 L80,190 L120,190 Z" />
-                       <!-- Hair (placeholder) -->
-                       <path id="superhero-hair-path" class="superhero-hair" d="M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z" />
-                       <!-- Emblem (simple star) -->
-                       <path class="superhero-emblem" d="M100,75 L110,95 L130,95 L115,105 L120,125 L100,115 L80,125 L85,105 L70,95 L90,95 Z" />
-                   </svg>
-               </div>
-               <div id="hero-output" class="text-center w-full max-w-md">
-                   <p class="text-2xl font-bold text-yellow-200 mb-2" id="generated-hero-name">Your Hero's Name</p>
-                   <div id="generated-core-powers" class="text-lg text-gray-200 mb-2"></div>
-                   <div id="generated-level-up-power" class="text-lg text-gray-200"></div>
-               </div>
+            <!-- Superhero Preview & Profile -->
+            <div class="lg:w-1/2 p-6 bg-white bg-opacity-15 rounded-2xl shadow-inner flex flex-col items-center justify-center">
+                <h3 class="text-2xl font-bold text-yellow-300 mb-4">Your Hero's Profile</h3>
+                <div id="superhero-preview" class="w-64 h-64 md:w-80 md:h-80 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden mb-6 shadow-xl border-4 border-yellow-400">
+                    <!-- SVG Superhero will be rendered here -->
+                    <svg viewBox="0 0 200 200" width="100%" height="100%">
+                        <!-- Generic Body -->
+                        <path class="superhero-body" d="M100,10 C50,10 50,190 100,190 C150,190 150,10 100,10 Z" />
+                        <!-- Suit Primary -->
+                        <path class="superhero-suit-primary" d="M100,60 C70,60 70,170 100,170 C130,170 130,60 100,60 Z M100,10 C90,10 90,40 100,40 C110,40 110,10 100,10 Z" />
+                        <!-- Suit Accent -->
+                        <path class="superhero-suit-accent" d="M100,40 C90,40 90,60 100,60 C110,60 110,40 100,40 Z M100,170 L80,190 L120,190 Z" />
+                        <!-- Hair (placeholder) -->
+                        <path id="superhero-hair-path" class="superhero-hair" d="M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z" />
+                        <!-- Emblem (simple star) -->
+                        <path class="superhero-emblem" d="M100,75 L110,95 L130,95 L115,105 L120,125 L100,115 L80,125 L85,105 L70,95 L90,95 Z" />
+                    </svg>
+                </div>
+                <div id="hero-output" class="text-center w-full max-w-md">
+                    <p class="text-2xl font-bold text-yellow-200 mb-2" id="generated-hero-name">Your Hero's Name</p>
+                    <div id="generated-core-powers" class="text-lg text-gray-200 mb-2"></div>
+                    <div id="generated-level-up-power" class="text-lg text-gray-200"></div>
+                </div>
 
-               <button onclick="openEmailModal()" id="email-hero-button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg transform transition-all duration-300 hover:scale-105 active:scale-95 mt-8 section-hidden">
-                   Email My Superhero Profile
-               </button>
-           </div>
-       </div>
-   </section>
+                <button onclick="openEmailModal()" id="email-hero-button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg transform transition-all duration-300 hover:scale-105 active:scale-95 mt-8 section-hidden">
+                    Email My Superhero Profile
+                </button>
+            </div>
+        </div>
+    </section>
 
-   <!-- Q&A Section -->
-   <section id="qna" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
-       <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Q&A & Your Hero's Journey Continues...</h2>
-       <p class="text-lg text-gray-200 mb-8 text-center max-w-3xl mx-auto">Wellness is a journey, not a destination. All six powers work together. Take one small action this week to 'level up' your chosen superpower!</p>
+    <!-- Q&A Section -->
+    <section id="qna" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Q&A & Your Hero's Journey Continues...</h2>
+        <p class="text-lg text-gray-200 mb-8 text-center max-w-3xl mx-auto">Wellness is a journey, not a destination. All six powers work together. Take one small action this week to 'level up' your chosen superpower!</p>
 
-       <div class="bg-white bg-opacity-15 rounded-2xl p-6 mb-8">
-           <h3 class="text-2xl font-bold text-yellow-300 mb-4">Got Questions?</h3>
-           <p class="text-lg text-gray-200 mb-4">Feel free to explore the dimensions again or build another hero! For deeper inquiries, consider reaching out to wellness professionals.</p>
-           <p class="text-md text-gray-300">Thank you for unleashing your inner hero!</p>
-       </div>
+        <div class="bg-white bg-opacity-15 rounded-2xl p-6 mb-8">
+            <h3 class="text-2xl font-bold text-yellow-300 mb-4">Got Questions?</h3>
+            <p class="text-lg text-gray-200 mb-4">Feel free to explore the dimensions again or build another hero! For deeper inquiries, consider reaching out to wellness professionals.</p>
+            <p class="text-md text-gray-300">Thank you for unleashing your inner hero!</p>
+        </div>
 
-       <div class="bg-white bg-opacity-15 rounded-2xl p-6">
-           <h3 class="text-2xl font-bold text-yellow-300 mb-4">References:</h3>
-           <ul class="list-disc list-inside text-gray-200 text-md space-y-2">
-               <li>Hettler, B. (1980). The Six Dimensions of Wellness Model. National Wellness Institute.</li>
-               <li>Warburton, D. E. R., et al. (2006). Health benefits of physical activity: the evidence. *CMAJ, 174*(6), 801-809.</li>
-               <li>Gross, J. J. (2015). Emotion regulation: Current status and future prospects. *Psychological Inquiry, 26*(1), 1-26.</li>
-               <li>Hodges, N. J., et al. (2018). Lifelong learning in sport and physical activity. *Sport, Education and Society, 23*(6), 601-615.</li>
-               <li>Holt-Lunstad, J., et al. (2010). Social relationships and mortality risk: a meta-analytic review. *PLoS Medicine, 7*(7), e1000316.</li>
-               <li>Koenig, H. G. (2012). Religion, spirituality, and health: The research and clinical implications. *ISRN Psychiatry, 2012*.</li>
-               <li>Judge, T. A., et al. (2001). The job satisfaction–job performance relationship: A qualitative and quantitative review. *Psychological Bulletin, 127*(3), 376-407.</li>
-           </ul>
-       </div>
-   </section>
+        <div class="bg-white bg-opacity-15 rounded-2xl p-6">
+            <h3 class="text-2xl font-bold text-yellow-300 mb-4">References:</h3>
+            <ul class="list-disc list-inside text-gray-200 text-md space-y-2">
+                <li>Hettler, B. (1980). The Six Dimensions of Wellness Model. National Wellness Institute.</li>
+                <li>Warburton, D. E. R., et al. (2006). Health benefits of physical activity: the evidence. *CMAJ, 174*(6), 801-809.</li>
+                <li>Gross, J. J. (2015). Emotion regulation: Current status and future prospects. *Psychological Inquiry, 26*(1), 1-26.</li>
+                <li>Hodges, N. J., et al. (2018). Lifelong learning in sport and physical activity. *Sport, Education and Society, 23*(6), 601-615.</li>
+                <li>Holt-Lunstad, J., et al. (2010). Social relationships and mortality risk: a meta-analytic review. *PLoS Medicine, 7*(7), e1000316.</li>
+                <li>Koenig, H. G. (2012). Religion, spirituality, and health: The research and clinical implications. *ISRN Psychiatry, 2012*.</li>
+                <li>Judge, T. A., et al. (2001). The job satisfaction–job performance relationship: A qualitative and quantitative review. *Psychological Bulletin, 127*(3), 376-407.</li>
+            </ul>
+        </div>
+    </section>
 
-   <!-- Email Modal -->
-   <div id="email-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 section-hidden">
-       <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0 text-gray-800" id="email-modal-content">
-           <h3 class="text-2xl font-bold text-purple-800 mb-4 text-center">Email Your Superhero Profile</h3>
-           <p class="text-center mb-6">Enter your email address to receive your custom superhero profile!</p>
-           <input type="email" id="email-input" placeholder="your.email@example.com" class="w-full p-3 mb-4 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500">
-           <label class="flex items-center mb-6">
-               <input type="checkbox" id="email-consent" class="mr-2 accent-blue-500">
-               <span class="text-sm">I agree to receive my superhero profile via email.</span>
-           </label>
-           <div id="email-status-message" class="text-center mb-4 text-sm font-semibold text-red-500"></div>
-           <div class="flex justify-end space-x-4">
-               <button onclick="closeEmailModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-full transition-colors">Cancel</button>
-               <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors" id="send-email-button">Send Email</button>
-           </div>
-       </div>
-   </div>
+    <!-- Email Modal -->
+    <div id="email-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 section-hidden">
+        <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0 text-gray-800" id="email-modal-content">
+            <h3 class="text-2xl font-bold text-purple-800 mb-4 text-center">Email Your Superhero Profile</h3>
+            <p class="text-center mb-6">Enter your email address to receive your custom superhero profile!</p>
+            <input type="email" id="email-input" placeholder="your.email@example.com" class="w-full p-3 mb-4 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+            <label class="flex items-center mb-6">
+                <input type="checkbox" id="email-consent" class="mr-2 accent-blue-500">
+                <span class="text-sm">I agree to receive my superhero profile via email.</span>
+            </label>
+            <div id="email-status-message" class="text-center mb-4 text-sm font-semibold text-red-500"></div>
+            <div class="flex justify-end space-x-4">
+                <button onclick="closeEmailModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-full transition-colors">Cancel</button>
+                <button onclick="sendEmail()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors" id="send-email-button">Send Email</button>
+            </div>
+        </div>
+    </div>
 
-   <!-- Loading Indicator -->
-   <div id="loading-indicator" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[100] section-hidden section-visible">
-       <div class="flex flex-col items-center">
-           <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-yellow-500 mb-4"></div>
-           <p class="text-white text-xl">Generating your hero...</p>
-       </div>
-   </div>
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[100] section-hidden">
+        <div class="flex flex-col items-center">
+            <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-yellow-500 mb-4"></div>
+            <p class="text-white text-xl">Generating your hero...</p>
+        </div>
+    </div>
 
-   <script>
-       // Global variables for Firebase (if needed later for storage/auth, currently not used for email)
-       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-       const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-       const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+    <script>
+        // Global variables for Firebase (if needed later for storage/auth, currently not used for email)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-       // Define the data for the six dimensions of wellness
-       const dimensionsData = [
-           { id: 'physical', name: 'Physical Power', subtitle: 'Strength & Stamina', keyPhrase: 'Move, fuel, and rest your body.', examples: 'Regular exercise, healthy eating, adequate sleep.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell"><path d="M14.4 14.4L9 19H4.5A2.5 2.5 0 0 1 2 16.5V12L7.6 6.47A10 10 0 0 1 14.4 14.4Z"/><path d="M14.4 14.4L19 9h4.5a2.5 2.5 0 0 0-2.5-2.5V12L16.47 17.6A10 10 0 0 1 14.4 14.4Z"/></svg>', description: "This is your body's strength and stamina. It's about recognizing the need for physical activity, healthy foods, and good sleep. When you fuel your body correctly, you're not just healthier; studies show you also boost your mood, energy, and even your brain function." },
-           { id: 'emotional', name: 'Emotional Power', subtitle: 'Empathy & Resilience', keyPhrase: 'Feel it, name it, and handle it.', examples: 'Journaling, talking to friends, mindfulness.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-handshake"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5 5 0 0 0 17.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5 5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 18v-2.3L19 9"/><path d="M17 13h-5l1.5-3.5L16 10l-1 4"/></svg>', description: "This is the ability to understand your own feelings, accept them, and cope effectively with stress. It’s about being attuned to your thoughts and emotions. Strong emotional regulation is directly linked to better mental health and the ability to bounce back from adversity." },
-           { id: 'intellectual', name: 'Intellectual Power', subtitle: 'Super-Strategy & Curiosity', keyPhrase: 'Keep your brain curious and creative.', examples: 'Reading, puzzles, learning a new skill.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain"><path d="M12 16a6 6 0 0 0 6-6V7.1a2 2 0 0 0-2.9-1.87L11.5 7h-.9L7 5.23A2 2 0 0 0 4 7.1V10a6 6 0 0 0 6 6Z"/><path d="M12 16v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/><path d="M12 16v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"/></svg>', description: "This dimension involves having an open mind to new ideas and experiences. Engaging in creative and mentally stimulating activities helps keep your mind sharp. Lifelong learning isn’t just for fun; it's associated with better cognitive health and overall life satisfaction." },
-           { id: 'social', name: 'Social Power', subtitle: 'Connection & Alliance-Building', keyPhrase: 'Connect with others and build your support network.', examples: 'Calling a friend, joining a club, volunteering.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', description: "This is your power to form meaningful relationships and interact positively with others. Having a strong social support network is one of the most reliable predictors of health and longevity. It helps reduce stress and promotes a sense of belonging." },
-           { id: 'spiritual', name: 'Spiritual Power', subtitle: 'Purpose & Inner Peace', keyPhrase: 'Find your personal purpose and meaning.', examples: 'Meditation, nature walks, personal reflection, prayer.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 18 2c1 2.48 2 5 2 8a10 10 0 0 1-17.02 8.5C6.26 18.3 11 20 11 20Z"/></svg>', description: "This is about having a sense of purpose and meaning in life. This doesn't have to be religious; it's about what gives your life value and helps you find inner peace. Whether through meditation, nature, or aligning with your values, this dimension provides a compass to guide your decisions and build resilience." },
-           { id: 'occupational', name: 'Occupational Power', subtitle: 'Mission Satisfaction', keyPhrase: 'Find personal satisfaction and enrichment in your work.', examples: 'Work-life balance, setting career goals, using your skills.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>', description: "This is about gaining personal satisfaction from your job or chosen vocation. It’s about your attitude toward your work and ensuring it aligns with your values. Strong occupational wellness, including a healthy work-life balance, is directly tied to lower stress and higher productivity." }
-       ];
+        // Define the data for the six dimensions of wellness
+        const dimensionsData = [
+            { id: 'physical', name: 'Physical Power', subtitle: 'Strength & Stamina', keyPhrase: 'Move, fuel, and rest your body.', examples: 'Regular exercise, healthy eating, adequate sleep.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dumbbell"><path d="M14.4 14.4L9 19H4.5A2.5 2.5 0 0 1 2 16.5V12L7.6 6.47A10 10 0 0 1 14.4 14.4Z"/><path d="M14.4 14.4L19 9h4.5a2.5 2.5 0 0 0-2.5-2.5V12L16.47 17.6A10 10 0 0 1 14.4 14.4Z"/></svg>', description: "This is your body's strength and stamina. It's about recognizing the need for physical activity, healthy foods, and good sleep. When you fuel your body correctly, you're not just healthier; studies show you also boost your mood, energy, and even your brain function." },
+            { id: 'emotional', name: 'Emotional Power', subtitle: 'Empathy & Resilience', keyPhrase: 'Feel it, name it, and handle it.', examples: 'Journaling, talking to friends, mindfulness.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-handshake"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5 5 0 0 0 17.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5 5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 18v-2.3L19 9"/><path d="M17 13h-5l1.5-3.5L16 10l-1 4"/></svg>', description: "This is the ability to understand your own feelings, accept them, and cope effectively with stress. It’s about being attuned to your thoughts and emotions. Strong emotional regulation is directly linked to better mental health and the ability to bounce back from adversity." },
+            { id: 'intellectual', name: 'Intellectual Power', subtitle: 'Super-Strategy & Curiosity', keyPhrase: 'Keep your brain curious and creative.', examples: 'Reading, puzzles, learning a new skill.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain"><path d="M12 16a6 6 0 0 0 6-6V7.1a2 2 0 0 0-2.9-1.87L11.5 7h-.9L7 5.23A2 2 0 0 0 4 7.1V10a6 6 0 0 0 6 6Z"/><path d="M12 16v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2"/><path d="M12 16v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"/></svg>', description: "This dimension involves having an open mind to new ideas and experiences. Engaging in creative and mentally stimulating activities helps keep your mind sharp. Lifelong learning isn’t just for fun; it's associated with better cognitive health and overall life satisfaction." },
+            { id: 'social', name: 'Social Power', subtitle: 'Connection & Alliance-Building', keyPhrase: 'Connect with others and build your support network.', examples: 'Calling a friend, joining a club, volunteering.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', description: "This is your power to form meaningful relationships and interact positively with others. Having a strong social support network is one of the most reliable predictors of health and longevity. It helps reduce stress and promotes a sense of belonging." },
+            { id: 'spiritual', name: 'Spiritual Power', subtitle: 'Purpose & Inner Peace', keyPhrase: 'Find your personal purpose and meaning.', examples: 'Meditation, nature walks, personal reflection, prayer.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 18 2c1 2.48 2 5 2 8a10 10 0 0 1-17.02 8.5C6.26 18.3 11 20 11 20Z"/></svg>', description: "This is about having a sense of purpose and meaning in life. This doesn't have to be religious; it's about what gives your life value and helps you find inner peace. Whether through meditation, nature, or aligning with your values, this dimension provides a compass to guide your decisions and build resilience." },
+            { id: 'occupational', name: 'Occupational Power', subtitle: 'Mission Satisfaction', keyPhrase: 'Find personal satisfaction and enrichment in your work.', examples: 'Work-life balance, setting career goals, using your skills.', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>', description: "This is about gaining personal satisfaction from your job or chosen vocation. It’s about your attitude toward your work and ensuring it aligns with your values. Strong occupational wellness, including a healthy work-life balance, is directly tied to lower stress and higher productivity." }
+        ];
 
-       // Hair styles SVG paths (simplified for demonstration)
-       const hairStyles = {
-           short: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z",
-           spiky: "M100,0 L120,50 L100,30 L80,50 Z M80,0 L60,50 L80,30 L100,50 Z M120,0 L140,50 L120,30 L100,50 Z",
-           long: "M100,0 C40,20 40,180 100,200 C160,180 160,20 100,0 Z",
-           bun: "M100,0 C50,0 50,100 100,100 C150,100 150,0 100,0 Z M120,10 C150,10 150,40 120,40 C90,40 90,10 120,10 Z" // Added a simple bun for variety
-       };
+        // Hair styles SVG paths (simplified for demonstration)
+        const hairStyles = {
+            short: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z",
+            spiky: "M100,0 L120,50 L100,30 L80,50 Z M80,0 L60,50 L80,30 L100,50 Z M120,0 L140,50 L120,30 L100,50 Z",
+            long: "M100,0 C40,20 40,180 100,200 C160,180 160,20 100,0 Z",
+            bun: "M100,0 C50,0 50,100 100,100 C150,100 150,0 100,0 Z M120,10 C150,10 150,40 120,40 C90,40 90,10 120,10 Z" // Added a simple bun for variety
+        };
 
-       let selectedStrongPowers = [];
-       let selectedLevelUpPower = null;
+        let selectedStrongPowers = [];
+        let selectedLevelUpPower = null;
 
-       // Function to show a specific section and hide others
-       function showSection(sectionId) {
-           document.querySelectorAll('section').forEach(section => {
-               if (section.id === sectionId) {
-                   section.classList.remove('section-hidden');
-                   section.classList.add('section-visible');
-               } else {
-                   section.classList.remove('section-visible');
-                   section.classList.add('section-hidden');
-               }
-           });
-            // Also ensure modal and loading indicator are hidden when switching sections
-           document.getElementById('email-modal').classList.add('section-hidden');
-           document.getElementById('loading-indicator').classList.add('section-hidden');
-       }
+        // Function to show a specific section and hide others
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.remove('section-hidden');
+                    section.classList.add('section-visible');
+                } else {
+                    section.classList.remove('section-visible');
+                    section.classList.add('section-hidden');
+                }
+            });
+             // Also ensure modal and loading indicator are hidden when switching sections
+            document.getElementById('email-modal').classList.add('section-hidden');
+            document.getElementById('loading-indicator').classList.add('section-hidden');
+        }
 
-       // Initialize content on window load
-       window.onload = function() {
-           renderDimensions(); // Render dimension cards
-           renderPowerSelectionOptions(); // Render power selection checkboxes/radios
-           setupEventListeners(); // Set up color and style change listeners
+        // Initialize content on window load
+        window.onload = function() {
+            renderDimensions(); // Render dimension cards
+            renderPowerSelectionOptions(); // Render power selection checkboxes/radios
+            setupEventListeners(); // Set up color and style change listeners
 
-           // Ensure the loading indicator is hidden at startup
-           document.getElementById('loading-indicator').classList.add('section-hidden');
-           // Ensure the modal is hidden at startup
-           document.getElementById('email-modal').classList.add('section-hidden');
+            // Ensure the loading indicator is hidden at startup
+            document.getElementById('loading-indicator').classList.add('section-hidden');
+            // Ensure the modal is hidden at startup
+            document.getElementById('email-modal').classList.add('section-hidden');
 
-           showSection('home'); // Show home section by default
-       };
+            showSection('home'); // Show home section by default
+        };
 
-       // Render dimension cards for the 'Dimensions' section
-       function renderDimensions() {
-           const grid = document.getElementById('dimensions-grid');
-           grid.innerHTML = dimensionsData.map(dim => `
-               <div class="bg-white bg-opacity-15 rounded-2xl p-6 shadow-xl border border-yellow-400 hover:scale-105 transition-transform duration-300">
-                   <div class="text-yellow-300 mb-3 flex items-center justify-center text-4xl">
-                       ${dim.icon}
-                   </div>
-                   <h3 class="text-2xl font-bold text-yellow-200 mb-2 text-center">${dim.name}</h3>
-                   <p class="text-md text-gray-300 mb-3 text-center">${dim.keyPhrase}</p>
-                   <p class="text-sm text-gray-400 text-center">(${dim.examples})</p>
-                   <p class="text-sm text-gray-200 mt-4">${dim.description}</p>
-               </div>
-           `).join('');
-       }
+        // Render dimension cards for the 'Dimensions' section
+        function renderDimensions() {
+            const grid = document.getElementById('dimensions-grid');
+            grid.innerHTML = dimensionsData.map(dim => `
+                <div class="bg-white bg-opacity-15 rounded-2xl p-6 shadow-xl border border-yellow-400 hover:scale-105 transition-transform duration-300">
+                    <div class="text-yellow-300 mb-3 flex items-center justify-center text-4xl">
+                        ${dim.icon}
+                    </div>
+                    <h3 class="text-2xl font-bold text-yellow-200 mb-2 text-center">${dim.name}</h3>
+                    <p class="text-md text-gray-300 mb-3 text-center">${dim.keyPhrase}</p>
+                    <p class="text-sm text-gray-400 text-center">(${dim.examples})</p>
+                    <p class="text-sm text-gray-200 mt-4">${dim.description}</p>
+                </div>
+            `).join('');
+        }
 
-       // Render power selection options for the 'Superhero Builder' section
-       function renderPowerSelectionOptions() {
-           const strongPowersDiv = document.getElementById('strong-powers-options');
-           const levelUpPowersDiv = document.getElementById('level-up-powers-options');
+        // Render power selection options for the 'Superhero Builder' section
+        function renderPowerSelectionOptions() {
+            const strongPowersDiv = document.getElementById('strong-powers-options');
+            const levelUpPowersDiv = document.getElementById('level-up-powers-options');
 
-           strongPowersDiv.innerHTML = dimensionsData.map(dim => `
-               <label class="flex items-center p-3 rounded-lg bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors">
-                   <input type="checkbox" name="strongPower" value="${dim.id}" class="mr-2 accent-yellow-400" onchange="handleStrongPowerChange(this)">
-                   <span class="text-gray-100 text-lg flex items-center">
-                       ${dim.icon} <span class="ml-2">${dim.name.replace(' Power', '')}</span>
-                   </span>
-               </label>
-           `).join('');
+            strongPowersDiv.innerHTML = dimensionsData.map(dim => `
+                <label class="flex items-center p-3 rounded-lg bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors">
+                    <input type="checkbox" name="strongPower" value="${dim.id}" class="mr-2 accent-yellow-400" onchange="handleStrongPowerChange(this)">
+                    <span class="text-gray-100 text-lg flex items-center">
+                        ${dim.icon} <span class="ml-2">${dim.name.replace(' Power', '')}</span>
+                    </span>
+                </label>
+            `).join('');
 
-           levelUpPowersDiv.innerHTML = dimensionsData.map(dim => `
-               <label class="flex items-center p-3 rounded-lg bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors">
-                   <input type="radio" name="levelUpPower" value="${dim.id}" class="mr-2 accent-yellow-400" onchange="handleLevelUpPowerChange(this)">
-                   <span class="text-gray-100 text-lg flex items-center">
-                       ${dim.icon} <span class="ml-2">${dim.name.replace(' Power', '')}</span>
-                   </span>
-               </label>
-           `).join('');
-       }
+            levelUpPowersDiv.innerHTML = dimensionsData.map(dim => `
+                <label class="flex items-center p-3 rounded-lg bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors">
+                    <input type="radio" name="levelUpPower" value="${dim.id}" class="mr-2 accent-yellow-400" onchange="handleLevelUpPowerChange(this)">
+                    <span class="text-gray-100 text-lg flex items-center">
+                        ${dim.icon} <span class="ml-2">${dim.name.replace(' Power', '')}</span>
+                    </span>
+                </label>
+            `).join('');
+        }
 
-       // Handle changes for strong power checkboxes
-       function handleStrongPowerChange(checkbox) {
-           if (checkbox.checked) {
-               if (selectedStrongPowers.length < 2) {
-                   selectedStrongPowers.push(checkbox.value);
-               } else {
-                   checkbox.checked = false; // Prevent more than 2 selections
-                   alertMessage("Please select only two strong powers.");
-               }
-           } else {
-               selectedStrongPowers = selectedStrongPowers.filter(id => id !== checkbox.value);
-           }
-       }
+        // Handle changes for strong power checkboxes
+        function handleStrongPowerChange(checkbox) {
+            if (checkbox.checked) {
+                if (selectedStrongPowers.length < 2) {
+                    selectedStrongPowers.push(checkbox.value);
+                } else {
+                    checkbox.checked = false; // Prevent more than 2 selections
+                    alertMessage("Please select only two strong powers.");
+                }
+            } else {
+                selectedStrongPowers = selectedStrongPowers.filter(id => id !== checkbox.value);
+            }
+        }
 
-       // Handle changes for level up power radio buttons
-       function handleLevelUpPowerChange(radio) {
-           selectedLevelUpPower = radio.value;
-       }
+        // Handle changes for level up power radio buttons
+        function handleLevelUpPowerChange(radio) {
+            selectedLevelUpPower = radio.value;
+        }
 
-       // Setup event listeners for customization inputs
-       function setupEventListeners() {
-           document.getElementById('skinTone').addEventListener('input', (e) => {
-               document.querySelector('.superhero-body').style.fill = e.target.value;
-           });
-           document.getElementById('hairColor').addEventListener('input', (e) => {
-               document.querySelector('.superhero-hair').style.fill = e.target.value;
-           });
-           document.getElementById('primaryColor').addEventListener('input', (e) => {
-               document.querySelector('.superhero-suit-primary').style.fill = e.target.value;
-           });
-           document.getElementById('accentColor').addEventListener('input', (e) => {
-               document.querySelector('.superhero-suit-accent').style.fill = e.target.value;
-           });
-           document.getElementById('hairStyle').addEventListener('change', (e) => {
-               const hairPathElement = document.getElementById('superhero-hair-path');
-               hairPathElement.setAttribute('d', hairStyles[e.target.value]);
-           });
-       }
+        // Setup event listeners for customization inputs
+        function setupEventListeners() {
+            document.getElementById('skinTone').addEventListener('input', (e) => {
+                document.querySelector('.superhero-body').style.fill = e.target.value;
+            });
+            document.getElementById('hairColor').addEventListener('input', (e) => {
+                document.querySelector('.superhero-hair').style.fill = e.target.value;
+            });
+            document.getElementById('primaryColor').addEventListener('input', (e) => {
+                document.querySelector('.superhero-suit-primary').style.fill = e.target.value;
+            });
+            document.getElementById('accentColor').addEventListener('input', (e) => {
+                document.querySelector('.superhero-suit-accent').style.fill = e.target.value;
+            });
+            document.getElementById('hairStyle').addEventListener('change', (e) => {
+                const hairPathElement = document.getElementById('superhero-hair-path');
+                hairPathElement.setAttribute('d', hairStyles[e.target.value]);
+            });
+        }
 
-       // Generate and display the superhero profile
-       function generateSuperhero() {
-           const heroName = document.getElementById('heroName').value.trim();
+        // Generate and display the superhero profile
+        function generateSuperhero() {
+            const heroName = document.getElementById('heroName').value.trim();
 
-           if (!heroName || selectedStrongPowers.length !== 2 || !selectedLevelUpPower) {
-               alertMessage("Please select exactly two strong powers, one power to level up, and provide a hero name.");
-               return;
-           }
+            if (!heroName || selectedStrongPowers.length !== 2 || !selectedLevelUpPower) {
+                alertMessage("Please select exactly two strong powers, one power to level up, and provide a hero name.");
+                return;
+            }
 
-           const generatedNameElement = document.getElementById('generated-hero-name');
-           const generatedCorePowersElement = document.getElementById('generated-core-powers');
-           const generatedLevelUpPowerElement = document.getElementById('generated-level-up-power');
-           const emailButton = document.getElementById('email-hero-button');
+            const generatedNameElement = document.getElementById('generated-hero-name');
+            const generatedCorePowersElement = document.getElementById('generated-core-powers');
+            const generatedLevelUpPowerElement = document.getElementById('generated-level-up-power');
+            const emailButton = document.getElementById('email-hero-button');
 
-           generatedNameElement.textContent = heroName;
+            generatedNameElement.textContent = heroName;
 
-           const strongPowerDescriptions = selectedStrongPowers.map(id => {
-               const dim = dimensionsData.find(d => d.id === id);
-               return `<span class="font-bold text-yellow-300">${dim.name.replace(' Power', '')} Power:</span> ${dim.keyPhrase}.`;
-           }).join(' ');
-           generatedCorePowersElement.innerHTML = `<strong>${heroName}'s Core Powers:</strong> ${strongPowerDescriptions}`;
+            const strongPowerDescriptions = selectedStrongPowers.map(id => {
+                const dim = dimensionsData.find(d => d.id === id);
+                return `<span class="font-bold text-yellow-300">${dim.name.replace(' Power', '')} Power:</span> ${dim.keyPhrase}.`;
+            }).join(' ');
+            generatedCorePowersElement.innerHTML = `<strong>${heroName}'s Core Powers:</strong> ${strongPowerDescriptions}`;
 
-           const levelUpDim = dimensionsData.find(d => d.id === selectedLevelUpPower);
-           generatedLevelUpPowerElement.innerHTML = `<strong>${heroName}'s Growth Area:</strong> By focusing on <span class="font-bold text-yellow-300">${levelUpDim.name.replace(' Power', '')} Power</span>, ${heroName} can further enhance their heroic journey: ${levelUpDim.keyPhrase}.`;
+            const levelUpDim = dimensionsData.find(d => d.id === selectedLevelUpPower);
+            generatedLevelUpPowerElement.innerHTML = `<strong>${heroName}'s Growth Area:</strong> By focusing on <span class="font-bold text-yellow-300">${levelUpDim.name.replace(' Power', '')} Power</span>, ${heroName} can further enhance their heroic journey: ${levelUpDim.keyPhrase}.`;
 
-           emailButton.classList.remove('section-hidden'); // Show email button after generation
-       }
+            emailButton.classList.remove('section-hidden'); // Show email button after generation
+        }
 
-       // Custom alert message function
-       function alertMessage(message) {
-           const messageBox = document.createElement('div');
-           messageBox.className = "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50 animate-bounce";
-           messageBox.textContent = message;
-           document.body.appendChild(messageBox);
-           setTimeout(() => {
-               messageBox.remove();
-           }, 3000); // Remove after 3 seconds
-       }
+        // Custom alert message function
+        function alertMessage(message) {
+            const messageBox = document.createElement('div');
+            messageBox.className = "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50 animate-bounce";
+            messageBox.textContent = message;
+            document.body.appendChild(messageBox);
+            setTimeout(() => {
+                messageBox.remove();
+            }, 3000); // Remove after 3 seconds
+        }
 
-       // Email modal functions
-       function openEmailModal() {
-           const modal = document.getElementById('email-modal');
-           const modalContent = document.getElementById('email-modal-content');
-           modal.classList.remove('section-hidden');
-           // Animate in
-           setTimeout(() => {
-               modalContent.classList.remove('opacity-0', 'scale-95');
-               modalContent.classList.add('opacity-100', 'scale-100');
-           }, 10);
-           document.getElementById('email-status-message').textContent = ''; // Clear previous status
-       }
+        // Email modal functions
+        function openEmailModal() {
+            const modal = document.getElementById('email-modal');
+            const modalContent = document.getElementById('email-modal-content');
+            modal.classList.remove('section-hidden');
+            // Animate in
+            setTimeout(() => {
+                modalContent.classList.remove('opacity-0', 'scale-95');
+                modalContent.classList.add('opacity-100', 'scale-100');
+            }, 10);
+            document.getElementById('email-status-message').textContent = ''; // Clear previous status
+        }
 
-       function closeEmailModal() {
-           const modal = document.getElementById('email-modal');
-           const modalContent = document.getElementById('email-modal-content');
-           // Animate out
-           modalContent.classList.remove('opacity-100', 'scale-100');
-           modalContent.classList.add('opacity-0', 'scale-95');
-           setTimeout(() => {
-               modal.classList.add('section-hidden');
-           }, 300); // Hide after animation
-       }
+        function closeEmailModal() {
+            const modal = document.getElementById('email-modal');
+            const modalContent = document.getElementById('email-modal-content');
+            // Animate out
+            modalContent.classList.remove('opacity-100', 'scale-100');
+            modalContent.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                modal.classList.add('section-hidden');
+            }, 300); // Hide after animation
+        }
 
-       // Simulate sending email using LLM for content generation
-       async function sendEmail() {
-           const emailInput = document.getElementById('email-input');
-           const emailConsent = document.getElementById('email-consent');
-           const emailStatus = document.getElementById('email-status-message');
-           const sendButton = document.getElementById('send-email-button');
-           const loadingIndicator = document.getElementById('loading-indicator');
+        // Simulate sending email using LLM for content generation
+        async function sendEmail() {
+            const emailInput = document.getElementById('email-input');
+            const emailConsent = document.getElementById('email-consent');
+            const emailStatus = document.getElementById('email-status-message');
+            const sendButton = document.getElementById('send-email-button');
+            const loadingIndicator = document.getElementById('loading-indicator');
 
-           if (!emailInput.value.trim()) {
-               emailStatus.textContent = 'Please enter your email address.';
-               return;
-           }
-           if (!emailConsent.checked) {
-               emailStatus.textContent = 'Please agree to receive your profile.';
-               return;
-           }
+            if (!emailInput.value.trim()) {
+                emailStatus.textContent = 'Please enter your email address.';
+                return;
+            }
+            if (!emailConsent.checked) {
+                emailStatus.textContent = 'Please agree to receive your profile.';
+                return;
+            }
 
-           // Disable button and show loading
-           sendButton.disabled = true;
-           sendButton.textContent = 'Sending...';
-           loadingIndicator.classList.remove('section-hidden');
+            // Disable button and show loading
+            sendButton.disabled = true;
+            sendButton.textContent = 'Sending...';
+            loadingIndicator.classList.remove('section-hidden');
 
-           const heroName = document.getElementById('generated-hero-name').textContent;
-           const corePowersText = document.getElementById('generated-core-powers').textContent;
-           const levelUpPowerText = document.getElementById('generated-level-up-power').textContent;
+            const heroName = document.getElementById('generated-hero-name').textContent;
+            const corePowersText = document.getElementById('generated-core-powers').textContent;
+            const levelUpPowerText = document.getElementById('generated-level-up-power').textContent;
 
-           const prompt = `Generate a friendly email body for a user who just created a superhero based on their wellness dimensions.
-           The email should be addressed to the user's email: ${emailInput.value.trim()}.
-           The superhero's name is "${heroName}".
-           The core strengths are: "${corePowersText}".
-           The area to level up is: "${levelUpPowerText}".
-           The email should encourage them on their wellness journey and invite them to visit the website again.
-           Make it sound like a message from a wellness coach, full of encouragement and superhero theme.`;
+            const prompt = `Generate a friendly email body for a user who just created a superhero based on their wellness dimensions.
+            The email should be addressed to the user's email: ${emailInput.value.trim()}.
+            The superhero's name is "${heroName}".
+            The core strengths are: "${corePowersText}".
+            The area to level up is: "${levelUpPowerText}".
+            The email should encourage them on their wellness journey and invite them to visit the website again.
+            Make it sound like a message from a wellness coach, full of encouragement and superhero theme.`;
 
-           let chatHistory = [];
-           chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
 
-           const payload = { contents: chatHistory };
-           const apiKey = ""; // Canvas will provide this at runtime
-           const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Canvas will provide this at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-           try {
-               const response = await fetch(apiUrl, {
-                   method: 'POST',
-                   headers: { 'Content-Type': 'application/json' },
-                   body: JSON.stringify(payload)
-               });
-               const result = await response.json();
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
 
-               if (result.candidates && result.candidates.length > 0 &&
-                   result.candidates[0].content && result.candidates[0].content.parts &&
-                   result.candidates[0].content.parts.length > 0) {
-                   const emailContent = result.candidates[0].content.parts[0].text;
-                   // In a real application, you would send this 'emailContent' via a backend email service.
-                   // For this demo, we'll just show the generated content and a success message.
-                   emailStatus.textContent = 'Email content generated! (Check console for full content)';
-                   emailStatus.classList.remove('text-red-500');
-                   emailStatus.classList.add('text-green-500');
-                   console.log("--- Generated Email Content ---");
-                   console.log(`To: ${emailInput.value.trim()}`);
-                   console.log(`Subject: Your Wellness Superhero, ${heroName}, is Ready!`);
-                   console.log(emailContent);
-                   console.log("-------------------------------");
-                   alertMessage("Your superhero profile email content has been generated! (Check console for full email body)");
-               } else {
-                   emailStatus.textContent = 'Failed to generate email content. Please try again.';
-                   emailStatus.classList.remove('text-green-500');
-                   emailStatus.classList.add('text-red-500');
-               }
-           } catch (error) {
-               console.error('Error generating email content:', error);
-               emailStatus.textContent = 'An error occurred. Please try again.';
-               emailStatus.classList.remove('text-green-500');
-               emailStatus.classList.add('text-red-500');
-           } finally {
-               sendButton.disabled = false;
-               sendButton.textContent = 'Send Email';
-               loadingIndicator.classList.add('section-hidden');
-               closeEmailModal(); // Close modal regardless of success for this demo
-           }
-       }
-   </script>
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const emailContent = result.candidates[0].content.parts[0].text;
+                    // In a real application, you would send this 'emailContent' via a backend email service.
+                    // For this demo, we'll just show the generated content and a success message.
+                    emailStatus.textContent = 'Email content generated! (Check console for full content)';
+                    emailStatus.classList.remove('text-red-500');
+                    emailStatus.classList.add('text-green-500');
+                    console.log("--- Generated Email Content ---");
+                    console.log(`To: ${emailInput.value.trim()}`);
+                    console.log(`Subject: Your Wellness Superhero, ${heroName}, is Ready!`);
+                    console.log(emailContent);
+                    console.log("-------------------------------");
+                    alertMessage("Your superhero profile email content has been generated! (Check console for full email body)");
+                } else {
+                    emailStatus.textContent = 'Failed to generate email content. Please try again.';
+                    emailStatus.classList.remove('text-green-500');
+                    emailStatus.classList.add('text-red-500');
+                }
+            } catch (error) {
+                console.error('Error generating email content:', error);
+                emailStatus.textContent = 'An error occurred. Please try again.';
+                emailStatus.classList.remove('text-green-500');
+                emailStatus.classList.add('text-red-500');
+            } finally {
+                sendButton.disabled = false;
+                sendButton.textContent = 'Send Email';
+                loadingIndicator.classList.add('section-hidden');
+                closeEmailModal(); // Close modal regardless of success for this demo
+            }
+        }
+    </script>
 </body>
 </html>
