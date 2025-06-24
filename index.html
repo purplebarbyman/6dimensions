@@ -537,7 +537,7 @@
             }, 300); // Use a shorter delay for modal close animation for responsiveness
         }
 
-        // Simulate sending email using LLM for content generation
+        // Simulate sending email without actual API call due to permissions
         async function sendEmail() {
             const emailInput = document.getElementById('email-input');
             const emailConsent = document.getElementById('email-consent');
@@ -563,89 +563,54 @@
                 loadingIndicator.classList.add('section-visible');
             }, 10);
 
-
             const heroName = document.getElementById('generated-hero-name').textContent;
             const corePowersText = document.getElementById('generated-core-powers').textContent;
             const levelUpPowerText = document.getElementById('generated-level-up-power').textContent;
 
-            const prompt = `Generate a friendly email body for a user who just created a superhero based on their wellness dimensions.
-            The email should be addressed to the user's email: ${emailInput.value.trim()}.
-            The superhero's name is "${heroName}".
-            The core strengths are: "${corePowersText}".
-            The area to level up is: "${levelUpPowerText}".
-            The email should encourage them on their wellness journey and invite them to visit the website again.
-            Make it sound like a message from a wellness coach, full of encouragement and superhero theme.`;
+            // Simulate email content generation locally
+            const simulatedEmailSubject = `Your Wellness Superhero, ${heroName}, is Ready!`;
+            const simulatedEmailBody = `
+Dear ${emailInput.value.trim()},
 
-            let chatHistory = [];
-            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+Congratulations, aspiring hero! We're thrilled to present your personalized Wellness Superhero: ${heroName}!
 
-            const payload = { contents: chatHistory };
-            // Using gemini-pro instead of gemini-2.0-flash as gemini-2.0-flash might require different API key setup
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=`; // Key will be automatically injected by Canvas.
+Your core strengths truly shine with:
+${corePowersText}
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+And as you continue your heroic journey, a key area for growth is:
+${levelUpPowerText}
 
-                // Check if the response itself indicates an error (e.g., 4xx or 5xx status)
-                if (!response.ok) {
-                    const errorBody = await response.text(); // Get raw error response
-                    emailStatus.textContent = `API Error: ${response.status} - ${response.statusText}. Check console for details.`;
-                    emailStatus.classList.remove('text-green-500');
-                    emailStatus.classList.add('text-red-500');
-                    console.error('API call failed with status:', response.status, response.statusText);
-                    console.error('Response body:', errorBody);
-                    return; // Exit function early if API call failed
-                }
+Remember, every great hero has a journey of continuous improvement. Focus on these areas, and you'll unlock even greater potential in your well-being.
 
-                const result = await response.json();
-                console.log("Full API Response:", result); // Log the full response for debugging
+Keep embracing your superpowers and striving for holistic wellness. We encourage you to revisit your profile and explore the dimensions of wellness anytime you need a boost or a reminder of your incredible capabilities.
 
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const emailContent = result.candidates[0].content.parts[0].text;
-                    // In a real application, you would send this 'emailContent' via a backend email service.
-                    // For this demo, we'll just show the generated content and a success message.
-                    emailStatus.textContent = 'Email content generated successfully! Check console for full content.';
-                    emailStatus.classList.remove('text-red-500');
-                    emailStatus.classList.add('text-green-500');
-                    console.log("--- Generated Email Content ---");
-                    console.log(`To: ${emailInput.value.trim()}`);
-                    console.log(`Subject: Your Wellness Superhero, ${heroName}, is Ready!`);
-                    console.log(emailContent);
-                    console.log("-------------------------------");
-                    alertMessage("Your superhero profile email content has been generated! (Check console for full email body)");
-                } else {
-                    emailStatus.textContent = 'Failed to generate email content: Unexpected API response structure.';
-                    emailStatus.classList.remove('text-green-500');
-                    emailStatus.classList.add('text-red-500');
-                    console.error('API response did not contain expected content structure:', result);
-                }
-            } catch (error) {
-                console.error('Error during email content generation or network issue:', error);
-                emailStatus.textContent = 'A network error occurred or an unexpected issue during generation. Please try again.';
-                emailStatus.classList.remove('text-green-500');
-                emailStatus.classList.add('text-red-500');
-            } finally {
-                sendButton.disabled = false;
-                sendButton.textContent = 'Send Email';
-                // Hide loading indicator with transition
-                loadingIndicator.classList.remove('section-visible');
-                loadingIndicator.classList.add('section-hidden');
-                setTimeout(() => {
-                    loadingIndicator.style.display = 'none'; // Truly hide after animation
-                }, 500); // Match hide transition time
-                // The modal will stay open with the status message, allowing the user to read it.
-                // Close modal only if content was successfully generated for a cleaner flow.
-                // If the user presses "Cancel" in the modal, it will close.
-                if (emailStatus.classList.contains('text-green-500')) {
-                    closeEmailModal();
-                }
-            }
+Unleash your inner hero and conquer your wellness goals!
+
+Stay strong,
+Your Wellness Coach Team
+`;
+            console.log("--- Simulated Email Content ---");
+            console.log(`To: ${emailInput.value.trim()}`);
+            console.log(`Subject: ${simulatedEmailSubject}`);
+            console.log(simulatedEmailBody);
+            console.log("-------------------------------");
+
+            // Simulate a delay for the "sending" process
+            await new Promise(resolve => setTimeout(resolve, 2000)); // 2-second delay
+
+            emailStatus.textContent = 'Email content generated successfully! Check your browser console for the full content.';
+            emailStatus.classList.remove('text-red-500');
+            emailStatus.classList.add('text-green-500');
+            alertMessage("Your superhero profile email content has been generated! (Check console for full email body)");
+
+            sendButton.disabled = false;
+            sendButton.textContent = 'Send Email';
+            loadingIndicator.classList.remove('section-visible');
+            loadingIndicator.classList.add('section-hidden');
+            setTimeout(() => {
+                loadingIndicator.style.display = 'none';
+            }, 500);
+            closeEmailModal();
         }
     </script>
 </body>
