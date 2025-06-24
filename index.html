@@ -597,7 +597,7 @@
                     const emailContent = result.candidates[0].content.parts[0].text;
                     // In a real application, you would send this 'emailContent' via a backend email service.
                     // For this demo, we'll just show the generated content and a success message.
-                    emailStatus.textContent = 'Email content generated! (Check console for full content)';
+                    emailStatus.textContent = 'Email content generated successfully! Check console for full content.';
                     emailStatus.classList.remove('text-red-500');
                     emailStatus.classList.add('text-green-500');
                     console.log("--- Generated Email Content ---");
@@ -607,16 +607,16 @@
                     console.log("-------------------------------");
                     alertMessage("Your superhero profile email content has been generated! (Check console for full email body)");
                 } else {
-                    emailStatus.textContent = 'Failed to generate email content. Please try again.';
+                    emailStatus.textContent = 'Failed to generate email content: Unexpected API response structure.';
                     emailStatus.classList.remove('text-green-500');
                     emailStatus.classList.add('text-red-500');
+                    console.error('API response did not contain expected content:', result);
                 }
             } catch (error) {
                 console.error('Error generating email content:', error);
-                emailStatus.textContent = 'An error occurred. Please try again.';
+                emailStatus.textContent = 'An error occurred during email content generation. Please try again.';
                 emailStatus.classList.remove('text-green-500');
                 emailStatus.classList.add('text-red-500');
-                console.log(error);
             } finally {
                 sendButton.disabled = false;
                 sendButton.textContent = 'Send Email';
@@ -626,7 +626,12 @@
                 setTimeout(() => {
                     loadingIndicator.style.display = 'none'; // Truly hide after animation
                 }, 500); // Match hide transition time
-                closeEmailModal(); // Close modal regardless of success for this demo
+                // The modal will stay open with the status message, allowing the user to read it.
+                // Close modal only if content was successfully generated for a cleaner flow.
+                // If the user presses "Cancel" in the modal, it will close.
+                if (emailStatus.classList.contains('text-green-500')) {
+                    closeEmailModal();
+                }
             }
         }
     </script>
