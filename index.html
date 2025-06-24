@@ -20,16 +20,18 @@
         }
         /* section-hidden for general use, to hide and allow transitions */
         .section-hidden {
-            display: none; /* Default hidden */
             opacity: 0;
             transform: scale(0.95);
-            transition: all 0.5s ease-in-out;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            pointer-events: none; /* Crucial: Prevents clicks when hidden */
+            visibility: hidden; /* Truly hides the element and makes it un-focusable */
         }
         /* Ensures section-hidden applies properly to elements that aren't 'section' tags */
         .section-visible {
             opacity: 1;
             transform: scale(1);
-            display: block; /* Ensure it's displayed when visible */
+            pointer-events: auto; /* Allows clicks when visible */
+            visibility: visible; /* Makes the element visible and focusable */
         }
         /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
@@ -298,18 +300,31 @@
 
         // Function to show a specific section and hide others
         function showSection(sectionId) {
-            document.querySelectorAll('section').forEach(section => {
-                if (section.id === sectionId) {
-                    section.classList.remove('section-hidden');
-                    section.classList.add('section-visible');
+            // Get all sections and fixed overlays
+            document.querySelectorAll('section, #email-modal, #loading-indicator').forEach(element => {
+                if (element.id === sectionId) {
+                    element.classList.remove('section-hidden');
+                    // For fixed overlays (modal, loading), ensure display:flex for centering
+                    if (element.id === 'loading-indicator' || element.id === 'email-modal') {
+                        element.style.display = 'flex';
+                    } else {
+                        element.style.display = 'block'; // For main content sections
+                    }
+                    // Small timeout to allow 'display' property to apply before transition starts
+                    setTimeout(() => {
+                        element.classList.add('section-visible');
+                    }, 10);
                 } else {
-                    section.classList.remove('section-visible');
-                    section.classList.add('section-hidden');
+                    element.classList.remove('section-visible'); // Start transition out
+                    element.classList.add('section-hidden'); // Apply opacity/transform and pointer-events:none
+                    // Hide display property after the transition completes
+                    setTimeout(() => {
+                        if (element.classList.contains('section-hidden')) { // Only hide if it's still intended to be hidden
+                            element.style.display = 'none';
+                        }
+                    }, 500); // This duration should match the CSS transition duration
                 }
             });
-             // Also ensure modal and loading indicator are hidden when switching sections
-            document.getElementById('email-modal').classList.add('section-hidden');
-            document.getElementById('loading-indicator').classList.add('section-hidden');
         }
 
         // Initialize content on window load
@@ -318,10 +333,11 @@
             renderPowerSelectionOptions(); // Render power selection checkboxes/radios
             setupEventListeners(); // Set up color and style change listeners
 
-            // Ensure the loading indicator is hidden at startup
-            document.getElementById('loading-indicator').classList.add('section-hidden');
-            // Ensure the modal is hidden at startup
-            document.getElementById('email-modal').classList.add('section-hidden');
+            // Ensure loading indicator and email modal are hidden initially by setting display:none
+            document.getElementById('loading-indicator').style.display = 'none';
+            document.getElementById('loading-indicator').classList.add('section-hidden'); // Apply hidden styles
+            document.getElementById('email-modal').style.display = 'none';
+            document.getElementById('email-modal').classList.add('section-hidden'); // Apply hidden styles
 
             showSection('home'); // Show home section by default
         };
@@ -449,6 +465,7 @@
             const modal = document.getElementById('email-modal');
             const modalContent = document.getElementById('email-modal-content');
             modal.classList.remove('section-hidden');
+            modal.style.display = 'flex'; // Ensure it displays as flex for centering
             // Animate in
             setTimeout(() => {
                 modalContent.classList.remove('opacity-0', 'scale-95');
@@ -465,7 +482,8 @@
             modalContent.classList.add('opacity-0', 'scale-95');
             setTimeout(() => {
                 modal.classList.add('section-hidden');
-            }, 300); // Hide after animation
+                modal.style.display = 'none'; // Truly hide after animation
+            }, 300); // Use a shorter delay for modal close animation for responsiveness
         }
 
         // Simulate sending email using LLM for content generation
@@ -489,6 +507,11 @@
             sendButton.disabled = true;
             sendButton.textContent = 'Sending...';
             loadingIndicator.classList.remove('section-hidden');
+            loadingIndicator.style.display = 'flex'; // Ensure it displays as flex for centering
+            setTimeout(() => { // Small delay to ensure display property applies before transition
+                loadingIndicator.classList.add('section-visible');
+            }, 10);
+
 
             const heroName = document.getElementById('generated-hero-name').textContent;
             const corePowersText = document.getElementById('generated-core-powers').textContent;
@@ -545,7 +568,12 @@
             } finally {
                 sendButton.disabled = false;
                 sendButton.textContent = 'Send Email';
+                // Hide loading indicator with transition
+                loadingIndicator.classList.remove('section-visible');
                 loadingIndicator.classList.add('section-hidden');
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none'; // Truly hide after animation
+                }, 500); // Match hide transition time
                 closeEmailModal(); // Close modal regardless of success for this demo
             }
         }
