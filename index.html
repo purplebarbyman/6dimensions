@@ -50,15 +50,15 @@
         }
 
         /* Generic superhero body SVG - for base shape */
-        .superhero-body {
-            fill: #E0BBE4; /* Default skin tone */
+        .superhero-head {
+            fill: #E0BBE4; /* Default skin tone for head */
             transition: fill 0.3s ease;
         }
-        .superhero-suit-primary {
+        .superhero-body { /* Main suit color, torso, arms, legs */
             fill: #FF0000; /* Default red */
             transition: fill 0.3s ease;
         }
-        .superhero-suit-accent {
+        .superhero-suit-accent { /* Gloves, boots, belt accent */
             fill: #0000FF; /* Default blue */
             transition: fill 0.3s ease;
         }
@@ -70,13 +70,18 @@
             fill: #FFD700; /* Default gold */
             transition: fill 0.3s ease;
         }
+        .superhero-cape {
+            fill: #8B0000; /* Default dark red cape */
+            transition: fill 0.3s ease;
+        }
+
 
         /* Hair styles (SVG paths) - these will be dynamically inserted/swapped */
-        /* Define simple hair path d attributes */
-        .hair-style-short { d: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z"; }
-        .hair-style-spiky { d: "M100 0 L120 50 L100 30 L80 50 Z M80 0 L60 50 L80 30 L100 50 Z M120 0 L140 50 L120 30 L100 50 Z"; }
-        .hair-style-long { d: "M100 0 C40 20 40 180 100 200 C160 180 160 20 100 0 Z"; }
-        .hair-style-bun { d: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z M120 10 C150 10 150 40 120 40 C90 40 90 10 120 10 Z"; }
+        /* These are relative to the head position within the SVG canvas, now a rounder head */
+        .hair-style-short { d: "M100,40 C85,35 70,35 60,40 C60,50 70,60 100,60 C130,60 140,50 140,40 C130,35 115,35 100,40 Z"; }
+        .hair-style-spiky { d: "M100,20 L110,35 L100,30 L90,35 Z M90,20 L80,35 L90,30 L100,35 Z M110,20 L120,35 L110,30 L100,35 Z M100,40 C80,30 70,50 100,50 C130,50 120,30 100,40 Z"; }
+        .hair-style-long { d: "M100,30 C60,40 60,140 100,150 C140,140 140,40 100,30 Z M100,40 C80,45 80,70 100,70 C120,70 120,45 100,40 Z"; }
+        .hair-style-bun { d: "M100,40 C85,40 85,60 100,60 C115,60 115,40 100,40 Z M115,45 C120,45 120,50 115,50 C110,50 110,45 115,45 Z"; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-600 to-purple-800 min-h-screen text-white flex flex-col items-center p-4">
@@ -178,6 +183,12 @@
                     <input type="color" id="accentColor" value="#0000FF" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
                 </div>
 
+                <!-- Cape Color (NEW) -->
+                <div class="flex items-center space-x-4">
+                    <label for="capeColor" class="text-xl font-semibold text-gray-100 min-w-[100px]">Cape Color:</label>
+                    <input type="color" id="capeColor" value="#8B0000" class="w-16 h-10 rounded-lg border-2 border-yellow-400 cursor-pointer">
+                </div>
+
                 <!-- Superhero Name -->
                 <div class="flex flex-col space-y-2">
                     <label for="heroName" class="text-xl font-semibold text-gray-100">3. Name Your Hero!</label>
@@ -193,18 +204,32 @@
             <div class="lg:w-1/2 p-6 bg-white bg-opacity-15 rounded-2xl shadow-inner flex flex-col items-center justify-center">
                 <h3 class="text-2xl font-bold text-yellow-300 mb-4">Your Hero's Profile</h3>
                 <div id="superhero-preview" class="w-64 h-64 md:w-80 md:h-80 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden mb-6 shadow-xl border-4 border-yellow-400">
-                    <!-- SVG Superhero will be rendered here -->
+                    <!-- NEW AND IMPROVED SVG SUPERHERO! -->
                     <svg viewBox="0 0 200 200" width="100%" height="100%">
-                        <!-- Generic Body -->
-                        <path class="superhero-body" d="M100,10 C50,10 50,190 100,190 C150,190 150,10 100,10 Z" />
-                        <!-- Suit Primary -->
-                        <path class="superhero-suit-primary" d="M100,60 C70,60 70,170 100,170 C130,170 130,60 100,60 Z M100,10 C90,10 90,40 100,40 C110,40 110,10 100,10 Z" />
-                        <!-- Suit Accent -->
-                        <path class="superhero-suit-accent" d="M100,40 C90,40 90,60 100,60 C110,60 110,40 100,40 Z M100,170 L80,190 L120,190 Z" />
-                        <!-- Hair (placeholder) -->
-                        <path id="superhero-hair-path" class="superhero-hair" d="M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z" />
-                        <!-- Emblem (simple star) -->
-                        <path class="superhero-emblem" d="M100,75 L110,95 L130,95 L115,105 L120,125 L100,115 L80,125 L85,105 L70,95 L90,95 Z" />
+                        <!-- Cape (behind body and arms) -->
+                        <path class="superhero-cape" d="M100,50 C120,40 140,40 160,50 C170,60 175,80 170,100 C160,140 130,180 100,190 C70,180 40,140 30,100 C25,80 30,60 40,50 C60,40 80,40 100,50 Z"/>
+
+                        <!-- Body (Primary Suit Color) -->
+                        <path class="superhero-body" d="M100,65 C85,65 75,70 70,80 L70,140 C70,155 80,165 100,165 C120,165 130,155 130,140 L130,80 C125,70 115,65 100,65 Z M70,85 C65,90 60,95 60,100 C60,105 65,110 70,115 L70,140 H60 V100 C60,90 65,85 70,80 Z M130,85 C135,90 140,95 140,100 C140,105 135,110 130,115 L130,140 H140 V100 C140,90 135,85 130,80 Z"/>
+
+                        <!-- Head (Skin) -->
+                        <circle class="superhero-head" cx="100" cy="50" r="25"/>
+                        <!-- Simple Facial Features -->
+                        <circle cx="90" cy="45" r="3" fill="#333"/> <!-- Left Eye -->
+                        <circle cx="110" cy="45" r="3" fill="#333"/> <!-- Right Eye -->
+                        <path d="M95,55 Q100,60 105,55" stroke="#333" stroke-width="2" fill="none"/> <!-- Mouth -->
+
+                        <!-- Hair (on top of head) - path will be updated by JS -->
+                        <path id="superhero-hair-path" class="superhero-hair" d="M100,40 C85,35 70,35 60,40 C60,50 70,60 100,60 C130,60 140,50 140,40 C130,35 115,35 100,40 Z" />
+
+                        <!-- Suit Accent (gloves, boots, belt) -->
+                        <rect class="superhero-suit-accent" x="75" y="115" width="50" height="10" rx="3" ry="3"/> <!-- Belt -->
+                        <path class="superhero-suit-accent" d="M70,140 V160 H80 L80,140 Z M130,140 V160 H120 L120,140 Z"/> <!-- Hands/Gloves -->
+                        <path class="superhero-suit-accent" d="M70,165 L65,175 L65,185 H80 L85,170 L80,165 Z M130,165 L135,175 L135,185 H120 L115,170 L120,165 Z"/> <!-- Boots -->
+
+
+                        <!-- Emblem (on chest, in front of body) -->
+                        <path class="superhero-emblem" id="superhero-emblem-path" d="M100,90 L105,100 L115,100 L107.5,107 L110,117 L100,112 L90,117 L92.5,107 L85,100 L95,100 Z" />
                     </svg>
                 </div>
                 <div id="hero-output" class="text-center w-full max-w-md">
@@ -275,6 +300,7 @@
         // Global variables for Firebase (if needed later for storage/auth, currently not used for email)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        // Corrected initialAuthToken declaration
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         // Define the data for the six dimensions of wellness
@@ -289,10 +315,21 @@
 
         // Hair styles SVG paths (simplified for demonstration)
         const hairStyles = {
-            short: "M100 0 C50 0 50 100 100 100 C150 100 150 0 100 0 Z",
-            spiky: "M100,0 L120,50 L100,30 L80,50 Z M80,0 L60,50 L80,30 L100,50 Z M120,0 L140,50 L120,30 L100,50 Z",
-            long: "M100,0 C40,20 40,180 100,200 C160,180 160,20 100,0 Z",
-            bun: "M100,0 C50,0 50,100 100,100 C150,100 150,0 100,0 Z M120,10 C150,10 150,40 120,40 C90,40 90,10 120,10 Z" // Added a simple bun for variety
+            // These hair paths are designed to fit the new circular head
+            short: "M100,40 C85,35 70,35 60,40 C60,50 70,60 100,60 C130,60 140,50 140,40 C130,35 115,35 100,40 Z",
+            spiky: "M100,20 L110,35 L100,30 L90,35 Z M90,20 L80,35 L90,30 L100,35 Z M110,20 L120,35 L110,30 L100,35 Z M100,40 C80,30 70,50 100,50 C130,50 120,30 100,40 Z",
+            long: "M100,30 C60,40 60,140 100,150 C140,140 140,40 100,30 Z M100,40 C80,45 80,70 100,70 C120,70 120,45 100,40 Z",
+            bun: "M100,40 C85,40 85,60 100,60 C115,60 115,40 100,40 Z M115,45 C120,45 120,50 115,50 C110,50 110,45 115,45 Z"
+        };
+
+        // Emblem SVG paths
+        const emblemPaths = {
+            physical: "M100,100 C90,110 80,105 80,95 C80,85 90,80 100,90 C110,80 120,85 120,95 C120,105 110,110 100,100 Z", // Heart
+            emotional: "M100,90 C90,90 90,95 95,100 C90,105 90,110 100,110 C110,110 110,105 105,100 C110,95 110,90 100,90 Z", // Smiley face
+            intellectual: "M95,95 L105,95 L105,85 L110,85 L110,105 L105,105 L105,115 L95,115 L95,105 L90,105 L90,85 L95,85 Z", // Lightbulb
+            social: "M100,90 L90,100 L110,100 L100,90 Z M90,100 L85,110 L115,110 L110,100 Z M85,110 L80,120 L120,120 L115,110 Z", // Simplified people/community
+            spiritual: "M100,90 C90,95 90,105 100,110 C110,105 110,95 100,90 Z M95,95 C90,98 90,102 95,105 C100,102 100,98 95,95 Z M105,95 C100,98 100,102 105,105 C110,102 110,98 105,95 Z", // Abstract leaf/spirit
+            occupational: "M90,90 H110 V110 H90 Z M90,110 L85,120 H115 L110,110 Z" // Book/Briefcase
         };
 
         let selectedStrongPowers = [];
@@ -404,16 +441,19 @@
         // Setup event listeners for customization inputs
         function setupEventListeners() {
             document.getElementById('skinTone').addEventListener('input', (e) => {
-                document.querySelector('.superhero-body').style.fill = e.target.value;
+                document.querySelector('.superhero-head').style.fill = e.target.value;
             });
             document.getElementById('hairColor').addEventListener('input', (e) => {
                 document.querySelector('.superhero-hair').style.fill = e.target.value;
             });
             document.getElementById('primaryColor').addEventListener('input', (e) => {
-                document.querySelector('.superhero-suit-primary').style.fill = e.target.value;
+                document.querySelector('.superhero-body').style.fill = e.target.value;
             });
             document.getElementById('accentColor').addEventListener('input', (e) => {
                 document.querySelector('.superhero-suit-accent').style.fill = e.target.value;
+            });
+            document.getElementById('capeColor').addEventListener('input', (e) => {
+                document.querySelector('.superhero-cape').style.fill = e.target.value;
             });
             document.getElementById('hairStyle').addEventListener('change', (e) => {
                 const hairPathElement = document.getElementById('superhero-hair-path');
@@ -434,6 +474,7 @@
             const generatedCorePowersElement = document.getElementById('generated-core-powers');
             const generatedLevelUpPowerElement = document.getElementById('generated-level-up-power');
             const emailButton = document.getElementById('email-hero-button');
+            const emblemPathElement = document.getElementById('superhero-emblem-path');
 
             generatedNameElement.textContent = heroName;
 
@@ -445,6 +486,16 @@
 
             const levelUpDim = dimensionsData.find(d => d.id === selectedLevelUpPower);
             generatedLevelUpPowerElement.innerHTML = `<strong>${heroName}'s Growth Area:</strong> By focusing on <span class="font-bold text-yellow-300">${levelUpDim.name.replace(' Power', '')} Power</span>, ${heroName} can further enhance their heroic journey: ${levelUpDim.keyPhrase}.`;
+
+            // Update the emblem based on the first strong power
+            const firstStrongPowerId = selectedStrongPowers[0];
+            if (emblemPaths[firstStrongPowerId]) {
+                emblemPathElement.setAttribute('d', emblemPaths[firstStrongPowerId]);
+            } else {
+                // Fallback to a default star/generic emblem if no specific path is found
+                emblemPathElement.setAttribute('d', "M100,90 L105,100 L115,100 L107.5,107 L110,117 L100,112 L90,117 L92.5,107 L85,100 L95,100 Z"); // A simple star
+            }
+
 
             emailButton.classList.remove('section-hidden'); // Show email button after generation
         }
@@ -565,6 +616,7 @@
                 emailStatus.textContent = 'An error occurred. Please try again.';
                 emailStatus.classList.remove('text-green-500');
                 emailStatus.classList.add('text-red-500');
+                console.log(error);
             } finally {
                 sendButton.disabled = false;
                 sendButton.textContent = 'Send Email';
