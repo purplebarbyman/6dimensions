@@ -24,7 +24,7 @@
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
             pointer-events: none; /* Crucial: Prevents clicks when hidden */
             visibility: hidden; /* Truly hides the element and makes it un-focusable */
-            **display: none; /* Added to hide immediately on load and prevent layout issues */**
+            display: none; /* Added to hide immediately on load and prevent layout issues */
         }
         /* Ensures section-hidden applies properly to elements that aren't 'section' tags */
         .section-visible {
@@ -32,7 +32,7 @@
             transform: scale(1);
             pointer-events: auto; /* Allows clicks when visible */
             visibility: visible; /* Makes the element visible and focusable */
-            **display: block; /* Ensure it displays correctly when visible */**
+            display: block; /* Ensure it displays correctly when visible */
         }
         /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
@@ -95,7 +95,7 @@
         </ul>
     </nav>
 
-    <section id="home" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl text-center">
+    <section id="home" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl text-center py-0">
         <h1 class="text-5xl md:text-7xl font-extrabold text-yellow-300 drop-shadow-lg mb-6 leading-tight">Unleash Your Wellness Superpowers!</h1>
         <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">Your Guide to the Six Dimensions of Wellness</p>
         <div class="relative w-full max-w-lg mx-auto mb-10">
@@ -108,7 +108,7 @@
         </button>
     </section>
 
-    <section id="dimensions" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
+    <section id="dimensions" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden py-0">
         <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Meet the 6 Core Powers</h2>
         <p class="text-lg text-gray-200 mb-10 text-center max-w-3xl mx-auto">Wellness is more than just physical health—it's about a holistic and active process of becoming aware and making choices toward a more successful existence. All six dimensions need attention to achieve true balance.</p>
 
@@ -116,7 +116,7 @@
             </div>
     </section>
 
-    <section id="superhero-builder" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
+    <section id="superhero-builder" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden py-0">
         <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Your Mission: Assemble Your Superhero!</h2>
         <p class="text-lg text-gray-200 mb-8 text-center max-w-3xl mx-auto">Identify your unique wellness strengths and craft a hero that represents your journey. Customize your hero, pick your powers, and unleash your potential!</p>
 
@@ -189,7 +189,7 @@
                     <svg viewBox="0 0 200 200" width="100%" height="100%">
                         <path class="superhero-cape" d="M100,50 C120,40 140,40 160,50 C170,60 175,80 170,100 C160,140 130,180 100,190 C70,180 40,140 30,100 C25,80 30,60 40,50 C60,40 80,40 100,50 Z"/>
 
-                        <path class="superhero-body" d="M100,60 C90,60 85,70 85,80 V120 C85,135 90,145 100,145 C110,145 115,135 115,120 V80 C115,70 110,60 100,60 Z M85,85 C80,90 75,95 75,100 C75,105 80,110 85,115 L85,140 H75 V100 C75,90 80,85 85,80 Z M115,85 C120,90 125,95 125,100 C125,105 120,110 115,115 L115,140 H125 V100 C125,90 120,85 115,80 Z"/>
+                        <path class="superhero-body" d="M100,65 C92,65 88,75 88,85 V115 C88,125 92,135 100,135 C108,135 112,125 112,115 V85 C112,75 108,65 100,65 Z M83,83 L78,80 V120 L83,117 Z M117,83 L122,80 V120 L117,117 Z M75,88 V112 C75,120 80,125 88,125 H112 C120,125 125,120 125,112 V88 C125,80 120,75 112,75 H88 C80,75 75,80 75,88 Z"/>
 
                         <circle class="superhero-head" cx="100" cy="50" r="25"/>
                         <circle cx="90" cy="45" r="3" fill="#333"/> <circle cx="110" cy="45" r="3" fill="#333"/> <path d="M95,55 Q100,60 105,55" stroke="#333" stroke-width="2" fill="none"/> <path id="superhero-hair-path" class="superhero-hair" d="M100,40 C85,35 70,35 60,40 C60,50 70,60 100,60 C130,60 140,50 140,40 C130,35 115,35 100,40 Z" />
@@ -214,7 +214,7 @@
         </div>
     </section>
 
-    <section id="qna" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden">
+    <section id="qna" class="container bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-8 shadow-2xl section-hidden py-0">
         <h2 class="text-4xl md:text-5xl font-extrabold text-yellow-300 mb-8 text-center drop-shadow-lg">Q&A & Your Hero's Journey Continues...</h2>
         <p class="text-lg text-gray-200 mb-8 text-center max-w-3xl mx-auto">Wellness is a journey, not a destination. All six powers work together. Take one small action this week to 'level up' your chosen superpower!</p>
 
